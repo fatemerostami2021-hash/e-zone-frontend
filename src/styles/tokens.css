@@ -1,0 +1,35 @@
+:root {
+  --font-family: 'Vazirmatn Variable', 'Vazirmatn', system-ui, sans-serif;
+
+  --text-display: clamp(2.5rem, 6vw, 4.5rem);
+  --text-h1: 2rem;
+  --text-h2: 1.375rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+}
+
+:root,
+:root[data-theme='light'] {
+  --color-bg: #FFFFFF;
+  --color-surface: #F7F9FC;
+  --color-ink: #10161F;
+  --color-ink-muted: #5B6472;
+  --color-border: rgba(16, 22, 31, 0.12);
+  --color-primary: #1E63E9;
+  --color-primary-ink: #FFFFFF;
+  --color-accent: #14B8A6;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #0B1220;
+  --color-surface: #101A2E;
+  --color-ink: #E8ECF4;
+  --color-ink-muted: #8E9AB0;
+  --color-border: rgba(232, 236, 244, 0.14);
+  --color-primary: #F5A623;
+  --color-primary-ink: #0B1220;
+  --color-accent: #14B8A6;
+}

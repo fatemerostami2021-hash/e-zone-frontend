@@ -1,0 +1,113 @@
+.ez-companies-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ez-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ez-page-heading {
+  font-size: var(--text-h1);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.ez-stats-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ez-stat-card {
+  flex: 1 1 160px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ez-stat-value {
+  font-size: var(--text-h1);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ez-stat-label {
+  font-size: var(--text-small);
+  color: var(--color-ink-muted);
+}
+
+.ez-table-wrapper {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.ez-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body);
+}
+
+.ez-table th,
+.ez-table td {
+  padding: 0.75rem 1rem;
+  text-align: start;
+}
+
+.ez-table thead th {
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--color-ink-muted);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.ez-table tbody tr {
+  border-block-end: 1px solid var(--color-border);
+  transition: background-color 0.15s ease;
+}
+
+.ez-table tbody tr:last-child {
+  border-block-end: none;
+}
+
+.ez-table tbody tr:hover {
+  background: var(--color-border);
+}
+
+.ez-cell-mono {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-muted);
+}
+
+.ez-cell-muted {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+}
+
+.ez-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.ez-badge.is-active {
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  color: var(--color-accent);
+}
+
+.ez-badge.is-inactive {
+  background: color-mix(in srgb, var(--color-ink-muted) 15%, transparent);
+  color: var(--color-ink-muted);
+}

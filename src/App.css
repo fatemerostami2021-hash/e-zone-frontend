@@ -1,0 +1,81 @@
+.ez-app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.ez-shell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ez-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  border-block-end: 1px solid var(--color-border);
+}
+
+.ez-page-title {
+  font-size: var(--text-h2);
+  font-weight: 700;
+}
+
+.ez-topbar-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.ez-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-inline: 2rem;
+  max-width: 640px;
+}
+
+.ez-hero-title {
+  font-size: var(--text-display);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0;
+  opacity: 0;
+  animation: ez-rise 0.7s ease-out forwards;
+}
+
+.ez-hero-subtitle {
+  font-size: 1.125rem;
+  color: var(--color-ink-muted);
+  margin-block-start: 0.75rem;
+  opacity: 0;
+  animation: ez-rise 0.7s ease-out 0.15s forwards;
+}
+
+.ez-ledger-line {
+  display: block;
+  height: 2px;
+  background: var(--color-primary);
+  margin-block-start: 2rem;
+  width: 0;
+  animation: ez-draw 0.9s ease-out 0.4s forwards;
+}
+
+@keyframes ez-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ez-draw {
+  to { width: 220px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ez-hero-title, .ez-hero-subtitle, .ez-ledger-line {
+    animation: none;
+    opacity: 1;
+    width: 220px;
+  }
+}

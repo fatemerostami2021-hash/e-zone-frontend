@@ -1,0 +1,131 @@
+{
+  "appName": "E-ZONE",
+  "login": "Login",
+  "logout": "Logout",
+  "email": "Email",
+  "password": "Password",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "companies": "Companies",
+  "goods": "Goods",
+  "dashboard": "Dashboard",
+  "settings": "Settings",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "modulesNav": "Modules Navigation",
+  "modules": {
+    "userAccess": "Users & Access",
+    "companies": "Company Management",
+    "baseInfo": "Base Information",
+    "importDocs": "Import Documents",
+    "domesticWarehouse": "Domestic Warehouse Receipt",
+    "foreignWarehouse": "Foreign Warehouse Receipt",
+    "consumptionPlan": "Bill of Materials",
+    "production": "Production Entry",
+    "productionCertificate": "Production Certificate",
+    "inventory": "Inventory Management",
+    "orders": "Order Registration",
+    "customsDeclaration": "Customs Declaration",
+    "reports": "Reports",
+    "fileManagement": "File Management",
+    "notifications": "Notifications"
+  },
+
+  "addCompany": "Add Company",
+  "totalCompanies": "Total Companies",
+  "activeCompanies": "Active",
+  "inactiveCompanies": "Inactive",
+  "name": "Name",
+  "registrationNumber": "Registration No.",
+  "economicCode": "Economic Code",
+  "address": "Address",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+
+  "nav": {
+    "home": "Home",
+    "modules": "Modules",
+    "about": "About",
+    "contact": "Contact",
+    "dashboard": "Dashboard"
+  },
+
+  "footer": {
+    "tagline": "Next-gen single window for SEZ & FTZ operations.",
+    "product": "Product",
+    "legal": "Legal",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "contact": "Contact",
+    "address": "Tehran, Iran",
+    "rights": "All rights reserved."
+  },
+
+  "notFound": {
+    "message": "The page you're looking for doesn't exist.",
+    "back": "Back to Home"
+  },
+
+  "loginPage": {
+    "subtitle": "Sign in to your E-ZONE single-window account.",
+    "placeholders": {
+      "email": "you@company.com",
+      "password": "••••••••"
+    },
+    "remember": "Remember me",
+    "forgot": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "requestAccess": "Request access",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signingIn": "Signing in...",
+    "errors": {
+      "emailInvalid": "Please enter a valid email address.",
+      "passwordShort": "Password must be at least 6 characters.",
+      "generic": "Login failed. Please try again."
+    }
+  },
+
+  "home": "Home",
+  "homePage": {
+    "hero": {
+      "pill": "Next-Gen SEZ & FTZ Single Window",
+      "title": "The digital gateway to Free Trade Zones",
+      "subtitle": "Streamline customs documentation, warehouse flows, bills of materials, and production audits on an enterprise-grade multi-tenant platform. Compliant with international standards and fully bilingual.",
+      "cta1": "Launch Secure Portal",
+      "cta2": "Request Consultation",
+      "panelLabel": "GLOBAL CARGO RADAR",
+      "panelTitle": "E-ZONE Logistics Node",
+      "sysOk": "SYS_OK: 99.9%",
+      "gpsLocked": "GPS_LOCKED"
+    },
+    "trusted": { "label": "POWERING IRAN'S LEADING FREE & SPECIAL ECONOMIC ZONES" },
+    "stats": { "eyebrow": "ENTERPRISE METRICS", "title": "E-ZONE by the Numbers" },
+    "features": { "eyebrow": "CAPABILITIES", "title": "Six Core Modules Built for Compliance" },
+    "steps": { "eyebrow": "THE E-ZONE JOURNEY", "title": "How E-ZONE Powers Free Trade Compliance" },
+    "architecture": {
+      "eyebrow": "CLOUD SERVICE INFRASTRUCTURE",
+      "title": "Strict Multi-Tenant Separation",
+      "desc": "E-ZONE runs on a high-security, multi-tenant database layer that completely isolates organizational data, logs, and processes, ensuring government-grade trade secrecy across all terminal companies."
+    },
+    "bilingual": {
+      "eyebrow": "GLOBALIZATION",
+      "title": "RTL / LTR Bilingual & Dual-Themed UI",
+      "subtitle": "Designed for local operators and global analysts alike. Switch natively between Persian (RTL) and English (LTR)."
+    },
+    "roadmap": {
+      "eyebrow": "PRODUCT ROADMAP",
+      "title": "Platform Release Stages",
+      "statusDeployed": "DEPLOYED",
+      "statusActiveDev": "ACTIVE DEV",
+      "statusUpcoming": "UPCOMING"
+    },
+    "cta": {
+      "title": "Ready to digitize your Trade Zone?",
+      "subtitle": "Deploy the E-ZONE single-window software in your Special Economic Zone. Get compliant, global-ready, and trace audits seamlessly.",
+      "primary": "Get Started Today",
+      "secondary": "Request Demo System"
+    }
+  }
+}

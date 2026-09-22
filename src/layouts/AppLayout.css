@@ -1,0 +1,42 @@
+.ez-app {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.ez-shell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ez-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.ez-page-title {
+  font-weight: 700;
+  font-size: var(--text-body);
+}
+
+.ez-topbar-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ez-main {
+  flex: 1;
+  padding: 2rem;
+  overflow-x: hidden;
+}
+
+@media (max-width: 860px) {
+  .ez-app { grid-template-columns: 1fr; }
+}

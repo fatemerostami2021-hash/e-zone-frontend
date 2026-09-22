@@ -1,0 +1,147 @@
+.ez-home {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Buttons (بزرگ‌تر از Button.css عادی، مخصوص هیرو) */
+.ez-btn-lg {
+  font-family: var(--font-family);
+  font-weight: 700;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  transition: filter 0.15s ease, background-color 0.15s ease;
+}
+.ez-btn-lg--primary { background: var(--color-primary); color: var(--color-primary-ink); }
+.ez-btn-lg--primary:hover { filter: brightness(1.08); }
+.ez-btn-lg--outline { background: transparent; border-color: var(--color-border); color: var(--color-ink); }
+.ez-btn-lg--outline:hover { background: var(--color-surface); }
+
+/* Hero */
+.ezh-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 2rem 0;
+}
+.ezh-pill {
+  display: inline-block;
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  color: var(--color-accent);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: var(--text-small);
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+.ezh-hero-title { font-size: var(--text-display); font-weight: 800; line-height: 1.15; margin: 0 0 1.25rem; }
+.ezh-hero-sub { color: var(--color-ink-muted); font-size: var(--text-body); margin-bottom: 1.75rem; max-width: 40rem; }
+.ezh-hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.ezh-hero-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+.ezh-hero-panel-label { color: var(--color-accent); font-size: var(--text-small); font-weight: 700; }
+.ezh-hero-panel-title { font-size: var(--text-h2); font-weight: 700; margin: 0.25rem 0 1.5rem; }
+.ezh-hero-panel-graphic { display: flex; justify-content: center; padding: 2rem 0; color: var(--color-primary); }
+.ezh-hero-panel-footer {
+  display: flex; justify-content: space-between; font-size: var(--text-small);
+  color: var(--color-ink-muted); border-block-start: 1px solid var(--color-border); padding-top: 0.75rem;
+}
+
+/* Trusted */
+.ezh-trusted { border-block: 1px solid var(--color-border); padding: 1.5rem 0; text-align: center; }
+.ezh-trusted-label { color: var(--color-ink-muted); font-size: var(--text-small); margin-bottom: 1rem; }
+.ezh-trusted-row { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.ezh-trusted-item { font-weight: 600; font-size: var(--text-small); }
+
+/* Section chrome */
+.ezh-section { display: flex; flex-direction: column; }
+.ezh-eyebrow { color: var(--color-accent); font-size: var(--text-small); font-weight: 700; }
+.ezh-section-title { font-size: var(--text-h1); font-weight: 800; margin: 0.5rem 0 1rem; }
+.ezh-section-sub { color: var(--color-ink-muted); max-width: 45rem; margin-bottom: 1.5rem; }
+
+/* Stats & Features grids */
+.ezh-stats-grid, .ezh-features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 1rem; }
+.ezh-features-grid { grid-template-columns: repeat(3, 1fr); }
+.ezh-stat-card, .ezh-feature-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: 1.5rem;
+}
+.ezh-icon-accent { color: var(--color-accent); }
+.ezh-stat-value { font-size: var(--text-h1); font-weight: 800; margin: 0.5rem 0; }
+.ezh-stat-title { font-weight: 700; margin-bottom: 0.35rem; }
+.ezh-stat-desc, .ezh-feature-card p { color: var(--color-ink-muted); font-size: var(--text-small); }
+.ezh-feature-icon {
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent); border-radius: var(--radius-sm); margin-bottom: 1rem;
+}
+.ezh-feature-card h3 { margin: 0 0 0.5rem; font-size: var(--text-h2); }
+
+/* Steps */
+.ezh-steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 1rem; }
+.ezh-step-num {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--color-primary); color: var(--color-primary-ink);
+  display: flex; align-items: center; justify-content: center; font-weight: 800; margin-bottom: 1rem;
+}
+.ezh-step-card h3 { margin: 0 0 0.5rem; font-size: var(--text-body); font-weight: 700; }
+.ezh-step-card p { color: var(--color-ink-muted); font-size: var(--text-small); margin: 0; }
+
+/* Architecture */
+.ezh-arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.ezh-arch-diagram {
+  position: relative; background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); height: 300px;
+}
+.ezh-arch-hub {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--color-accent);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  color: var(--color-accent); font-weight: 700; font-size: var(--text-small);
+}
+.ezh-tenant {
+  position: absolute; background: var(--color-bg); border: 1px solid var(--color-border);
+  padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); font-size: var(--text-small); font-weight: 700;
+}
+.ezh-tenant--a { top: 15%; inset-inline-start: 15%; }
+.ezh-tenant--b { top: 15%; inset-inline-end: 15%; }
+.ezh-tenant--c { bottom: 15%; inset-inline-start: 15%; }
+.ezh-tenant--d { bottom: 15%; inset-inline-end: 15%; }
+.ezh-checklist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.ezh-checklist li { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+
+/* Roadmap */
+.ezh-roadmap-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; margin-top: 1rem; }
+.ezh-roadmap-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; }
+.ezh-status--activeDev { border-color: var(--color-primary); }
+.ezh-roadmap-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.ezh-roadmap-phase { display: flex; align-items: center; gap: 0.25rem; color: var(--color-primary); font-size: var(--text-small); font-weight: 700; }
+.ezh-roadmap-badge { font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); }
+.ezh-status--deployed .ezh-roadmap-badge { background: color-mix(in srgb, var(--color-accent) 15%, transparent); color: var(--color-accent); }
+.ezh-status--activeDev .ezh-roadmap-badge { background: color-mix(in srgb, var(--color-primary) 15%, transparent); color: var(--color-primary); }
+.ezh-status--upcoming .ezh-roadmap-badge { background: color-mix(in srgb, var(--color-ink-muted) 15%, transparent); color: var(--color-ink-muted); }
+.ezh-roadmap-card h3 { font-size: var(--text-body); margin: 0 0 0.4rem; }
+.ezh-roadmap-card p { color: var(--color-ink-muted); font-size: var(--text-small); margin: 0; }
+
+/* CTA */
+.ezh-cta { text-align: center; align-items: center; }
+.ezh-cta-title { font-size: var(--text-h1); font-weight: 800; margin-bottom: 1rem; }
+.ezh-cta .ezh-section-sub { margin-left: auto; margin-right: auto; }
+.ezh-cta .ezh-hero-actions { justify-content: center; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .ezh-hero, .ezh-arch-grid { grid-template-columns: 1fr; }
+  .ezh-stats-grid, .ezh-features-grid, .ezh-steps-grid, .ezh-roadmap-grid { grid-template-columns: repeat(2, 1fr); }
+}
