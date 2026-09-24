@@ -87,6 +87,48 @@
     }
   },
 
+  "table": {
+    "search": "جستجو...",
+    "empty": "موردی یافت نشد",
+    "loading": "در حال بارگذاری...",
+    "actionsHeader": "عملیات",
+    "edit": "ویرایش",
+    "delete": "حذف",
+    "rowsPerPage": "تعداد در صفحه",
+    "page": "صفحه",
+    "of": "از",
+    "next": "بعدی",
+    "prev": "قبلی"
+  },
+
+  "drawer": {
+    "close": "بستن",
+    "cancel": "انصراف",
+    "save": "ذخیره",
+    "saving": "در حال ذخیره..."
+  },
+
+  "goodsPage": {
+    "addNew": "افزودن کالا",
+    "addTitle": "افزودن کالا",
+    "editTitle": "ویرایش کالا",
+    "itemCode": "کد کالا",
+    "hsCode": "تعرفه گمرکی (HS Code)",
+    "unit": "واحد اندازه‌گیری",
+    "itemType": "نوع کالا",
+    "company": "شرکت",
+    "allCompanies": "همه شرکت‌ها",
+    "allTypes": "همه انواع",
+    "confirmDelete": "آیا از حذف این کالا مطمئن هستید؟",
+    "types": {
+      "raw_material": "ماده اولیه",
+      "part": "قطعه",
+      "finished_product": "محصول نهایی",
+      "machinery": "ماشین‌آلات",
+      "waste": "ضایعات"
+    }
+  },
+
   "home": "صفحه اصلی",
   "homePage": {
     "hero": {

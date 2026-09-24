@@ -87,6 +87,48 @@
     }
   },
 
+  "table": {
+    "search": "Search...",
+    "empty": "No results found",
+    "loading": "Loading...",
+    "actionsHeader": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "of": "of",
+    "next": "Next",
+    "prev": "Previous"
+  },
+
+  "drawer": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving..."
+  },
+
+  "goodsPage": {
+    "addNew": "Add Goods",
+    "addTitle": "Add Goods",
+    "editTitle": "Edit Goods",
+    "itemCode": "Item Code",
+    "hsCode": "HS Code",
+    "unit": "Unit of Measure",
+    "itemType": "Item Type",
+    "company": "Company",
+    "allCompanies": "All Companies",
+    "allTypes": "All Types",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "types": {
+      "raw_material": "Raw Material",
+      "part": "Part",
+      "finished_product": "Finished Product",
+      "machinery": "Machinery",
+      "waste": "Waste"
+    }
+  },
+
   "home": "Home",
   "homePage": {
     "hero": {

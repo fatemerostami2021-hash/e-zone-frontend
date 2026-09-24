@@ -1,33 +1,49 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../theme/useTheme';
 import Button from '../components/Button';
 import Sidebar, { MODULE_KEYS } from '../components/Sidebar';
 import './AppLayout.css';
 
+// Module keys that have a dedicated page (others use the generic placeholder)
+const MODULE_ROUTES = {
+  companies: '/app/companies',
+  baseInfo: '/app/goods',
+};
+
+function findActiveKey(pathname) {
+  // Reverse lookup: match real page paths to their module key
+  for (const [key, path] of Object.entries(MODULE_ROUTES)) {
+    if (pathname === path) return key;
+  }
+  const m = pathname.match(/^\/app\/modules\/([a-z0-9-]+)$/i);
+  return m && MODULE_KEYS.includes(m[1]) ? m[1] : null;
+}
+
 function AppLayout() {
   const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const location = useLocation();
+
+  // Active sidebar item is derived from the URL, not local state
+  const activeKey = findActiveKey(location.pathname);
+  const activeIndex = activeKey ? MODULE_KEYS.indexOf(activeKey) : -1;
 
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === 'fa' ? 'en' : 'fa');
   };
 
   const handleSelect = (index) => {
-    setActiveIndex(index);
     if (index === -1) {
       navigate('/app');
     } else {
       const key = MODULE_KEYS[index];
-      navigate(`/app/modules/${key}`);
+      navigate(MODULE_ROUTES[key] || `/app/modules/${key}`);
     }
   };
 
-  const activeModule = activeIndex >= 0 ? MODULE_KEYS[activeIndex] : null;
-  const pageTitle = activeIndex === -1 ? t('home') : t(`modules.${activeModule}`);
+  const pageTitle = activeIndex === -1 ? t('home') : t(`modules.${activeKey}`);
 
   return (
     <div className="ez-app">
