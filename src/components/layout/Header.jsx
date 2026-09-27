@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe, Moon, Sun, LogIn } from 'lucide-react';
+import { Menu, X, Sun, Moon, LogIn } from 'lucide-react';
 import { useTheme } from '../../theme/useTheme';
 import './Header.css';
 
@@ -9,57 +9,105 @@ function Header() {
   const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navRef = useRef(null);
 
-  const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'fa' ? 'en' : 'fa');
-  };
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
+  const [prevPathname, setPrevPathname] = useState(location.pathname);
+  if (location.pathname !== prevPathname) {
+    setPrevPathname(location.pathname);
+    setOpen(false);
+  }
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const isFa = i18n.language === 'fa';
+  const toggleLanguage = () => i18n.changeLanguage(isFa ? 'en' : 'fa');
+  const langLabel = isFa ? 'English' : 'فارسی';
   const close = () => setOpen(false);
 
+  const navItems = [
+    { to: '/', end: true, label: t('nav.home') },
+    { to: '/modules', end: false, label: t('nav.modules') },
+    { to: '/about', end: false, label: t('nav.about') },
+    { to: '/contact', end: false, label: t('nav.contact') },
+  ];
+
   return (
-    <header className="ez-header">
+    <header className={`ez-header${scrolled ? ' is-scrolled' : ''}`}>
       <div className="ez-header-inner">
         <Link to="/" className="ez-header-brand" onClick={close}>
-          <span className="ez-header-logo">E</span>
+          <img src="/logo.png" alt={t('appName')} className="ez-header-logo" />
           <span className="ez-header-name">{t('appName')}</span>
         </Link>
 
-        <nav className={`ez-header-nav${open ? ' is-open' : ''}`}>
-          <NavLink to="/" end className="ez-nav-link" onClick={close}>
-            {t('nav.home')}
-          </NavLink>
-          <NavLink to="/modules" className="ez-nav-link" onClick={close}>
-            {t('nav.modules')}
-          </NavLink>
-          <NavLink to="/about" className="ez-nav-link" onClick={close}>
-            {t('nav.about')}
-          </NavLink>
-          <NavLink to="/contact" className="ez-nav-link" onClick={close}>
-            {t('nav.contact')}
-          </NavLink>
+        <nav
+          ref={navRef}
+          id="ez-primary-nav"
+          className={`ez-header-nav${open ? ' is-open' : ''}`}
+          aria-label="Primary"
+        >
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `ez-nav-link${isActive ? ' is-active' : ''}`
+              }
+              onClick={close}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+          <Link to="/login" className="ez-header-cta ez-header-cta--mobile" onClick={close}>
+            <LogIn size={16} /> {t('login')}
+          </Link>
         </nav>
 
         <div className="ez-header-actions">
           <button
             type="button"
-            className="ez-icon-btn"
+            className="ez-lang-switch"
             onClick={toggleLanguage}
             aria-label="Toggle language"
           >
-            <Globe size={18} />
-            <span className="ez-icon-btn-label">{i18n.language === 'fa' ? 'EN' : 'FA'}</span>
+            <span className={`ez-flag ${isFa ? 'ez-flag--ir' : 'ez-flag--uk'}`} aria-hidden="true" />
+            <span className="ez-lang-label">{langLabel}</span>
           </button>
 
           <button
             type="button"
-            className="ez-icon-btn"
+            className="ez-theme-switch"
             onClick={toggleTheme}
+            role="switch"
+            aria-checked={theme === 'dark'}
             aria-label="Toggle theme"
           >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            <span className="ez-theme-track">
+              <span className="ez-theme-knob">
+                {theme === 'light' ? <Sun size={13} /> : <Moon size={13} />}
+              </span>
+            </span>
           </button>
 
-          <Link to="/login" className="ez-header-cta">
+          <Link to="/login" className="ez-header-cta ez-header-cta--desktop">
             <LogIn size={16} />
             {t('login')}
           </Link>
@@ -69,11 +117,15 @@ function Header() {
             className="ez-icon-btn ez-menu-toggle"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="ez-primary-nav"
           >
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
+
+      {open && <div className="ez-header-backdrop" onClick={close} aria-hidden="true" />}
     </header>
   );
 }

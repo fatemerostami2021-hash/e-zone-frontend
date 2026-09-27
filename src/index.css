@@ -28,3 +28,7 @@ body {
     transition: none !important;
   }
 }
+
+html, body {
+  overflow-x: hidden;
+}

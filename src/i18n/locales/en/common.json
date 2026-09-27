@@ -143,9 +143,19 @@
       "gpsLocked": "GPS_LOCKED"
     },
     "trusted": { "label": "POWERING IRAN'S LEADING FREE & SPECIAL ECONOMIC ZONES" },
+    "mission": {
+      "eyebrow": "OUR MISSION",
+      "title": "Digitize your Trade Zone",
+      "desc": "E-ZONE unifies customs, warehousing, production and audit workflows for Free and Special Economic Zones into a single platform — so operators stay compliant with international standards."
+    },
     "stats": { "eyebrow": "ENTERPRISE METRICS", "title": "E-ZONE by the Numbers" },
     "features": { "eyebrow": "CAPABILITIES", "title": "Six Core Modules Built for Compliance" },
     "steps": { "eyebrow": "THE E-ZONE JOURNEY", "title": "How E-ZONE Powers Free Trade Compliance" },
+    "logistics": {
+      "eyebrow": "SMART LOGISTICS",
+      "title": "Transparent, Traceable Cargo Flow",
+      "desc": "From cargo entry into the zone to final clearance, every supply-chain node is visible, auditable, and reportable inside E-ZONE."
+    },
     "architecture": {
       "eyebrow": "CLOUD SERVICE INFRASTRUCTURE",
       "title": "Strict Multi-Tenant Separation",
