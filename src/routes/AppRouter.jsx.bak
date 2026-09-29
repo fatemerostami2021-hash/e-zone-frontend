@@ -9,9 +9,11 @@ import ModulesIndexPage from '../pages/ModulesIndexPage';
 import LoginPage from '../pages/LoginPage';
 import CompaniesPage from '../pages/CompaniesPage';
 import GoodsPage from '../pages/GoodsPage';
-import ModulePage from '../pages/ModulePage';
 import NotFoundPage from '../pages/NotFoundPage';
 
+function GenericModulePage() {
+  return null;
+}
 
 function AppRouter() {
   return (
@@ -35,7 +37,7 @@ function AppRouter() {
         <Route index element={<HomePage />} />
         <Route path="companies" element={<CompaniesPage />} />
         <Route path="goods" element={<GoodsPage />} />
-        <Route path="modules/:key" element={<ModulePage />} />
+        <Route path="modules/:key" element={<GenericModulePage />} />
       </Route>
     </Routes>
   );

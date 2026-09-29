@@ -179,5 +179,65 @@
       "primary": "Get Started Today",
       "secondary": "Request Demo System"
     }
+  },
+
+  "samplePage": {
+    "notice": "This page is displayed with sample data and will soon be replaced with real information.",
+    "total": "Total Records",
+    "columns": {
+      "ref": "Document No.",
+      "date": "Date",
+      "company": "Company",
+      "quantity": "Quantity",
+      "status": "Status"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending": "Pending",
+      "approved": "Approved"
+    },
+    "filters": {
+      "all": "All",
+      "search": "Search documents...",
+      "dateFrom": "From date",
+      "dateTo": "To date",
+      "clear": "Clear filters"
+    },
+    "actions": {
+      "add": "Add Record",
+      "export": "Export",
+      "print": "Print",
+      "refresh": "Refresh",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure you want to delete this record?"
+    },
+    "empty": {
+      "title": "No records to display",
+      "description": "No documents have been registered yet or the applied filters returned no results.",
+      "action": "Add First Record"
+    },
+    "loading": "Loading sample data...",
+    "error": "Failed to load data. Please try again.",
+    "pagination": {
+      "rowsPerPage": "Rows per page",
+      "page": "Page",
+      "of": "of",
+      "next": "Next",
+      "prev": "Previous"
+    },
+    "summary": {
+      "title": "Status Summary",
+      "draft": "Drafts",
+      "pending": "Pending Approval",
+      "approved": "Approved"
+    },
+    "toast": {
+      "created": "Sample record created successfully.",
+      "updated": "Sample record updated successfully.",
+      "deleted": "Sample record deleted successfully.",
+      "exported": "Export completed successfully."
+    }
   }
 }

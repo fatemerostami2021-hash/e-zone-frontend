@@ -75,7 +75,7 @@
 
 .ez-form-field-error {
   font-size: var(--text-small);
-  color: #f87171;
+  color: #e5484d;
 }
 
 .ez-drawer-actions {
@@ -108,6 +108,6 @@
 }
 
 .ez-icon-btn-danger:hover {
-  color: #f87171;
-  border-color: #f87171;
+  color: #e5484d;
+  border-color: #e5484d;
 }

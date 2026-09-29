@@ -10,11 +10,29 @@ html, body, #root {
 
 body {
   margin: 0;
-  background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-family);
   font-feature-settings: 'tnum' 1;
+  font-weight: 500;
   transition: background-color 0.25s ease, color 0.25s ease;
+
+  background-color: #CBE2F2;
+  --hex-line: rgba(16, 22, 31, 0.08);
+  background-image:
+    linear-gradient(30deg, var(--hex-line) 12%, transparent 12.5%, transparent 87%, var(--hex-line) 87.5%, var(--hex-line)),
+    linear-gradient(150deg, var(--hex-line) 12%, transparent 12.5%, transparent 87%, var(--hex-line) 87.5%, var(--hex-line)),
+    linear-gradient(30deg, var(--hex-line) 12%, transparent 12.5%, transparent 87%, var(--hex-line) 87.5%, var(--hex-line)),
+    linear-gradient(150deg, var(--hex-line) 12%, transparent 12.5%, transparent 87%, var(--hex-line) 87.5%, var(--hex-line)),
+    linear-gradient(60deg, var(--hex-line) 25%, transparent 25.5%, transparent 75%, var(--hex-line) 75%, var(--hex-line)),
+    linear-gradient(60deg, var(--hex-line) 25%, transparent 25.5%, transparent 75%, var(--hex-line) 75%, var(--hex-line));
+  background-size: 28px 49px;
+  background-position: 0 0, 0 0, 14px 25px, 14px 25px, 0 0, 14px 25px;
+  background-attachment: fixed;
+}
+
+:root[data-theme='dark'] body {
+  background-color: var(--color-bg);
+  --hex-line: rgba(232, 236, 244, 0.1);
 }
 
 :focus-visible {

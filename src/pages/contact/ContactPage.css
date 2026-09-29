@@ -1,0 +1,278 @@
+.ezc,
+.ezc *,
+.ezc *::before,
+.ezc *::after {
+  box-sizing: border-box;
+}
+
+.ezc {
+  --ezc-dark: #0b1220;
+  --ezc-dark-2: #101c33;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+  padding-inline: var(--page-gutter);
+  padding-block: 1rem 4rem;
+}
+.ezc a.ez-btn-lg {
+  text-decoration: none;
+}
+
+/* ---------- Hero (dark in both themes) ---------- */
+.ezc-band {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  color: #fff;
+  background:
+    radial-gradient(ellipse 60% 90% at 85% 0%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 70% at 5% 100%, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 70%),
+    linear-gradient(160deg, var(--ezc-dark), var(--ezc-dark-2));
+  border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+.ezc-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(2.25rem, 5vw, 3.5rem) 1.5rem clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+}
+.ezc-hero-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: #fff;
+}
+.ezc-reach {
+  width: 100%;
+  max-width: 44rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.ezc-reach-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+  color: #fff;
+}
+[dir='rtl'] .ezc-reach-icon svg {
+  transform: scaleX(-1);
+}
+.ezc-reach h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+}
+.ezc-reach p {
+  margin: 0 0 1.25rem;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.8);
+}
+.ezc-reach-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.75rem;
+}
+.ezc-reach-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  border-block-end: 1px solid transparent;
+}
+.ezc-reach-links a:hover,
+.ezc-reach-links a:focus-visible {
+  border-block-end-color: var(--color-accent);
+  outline: none;
+}
+
+/* ---------- Headings ---------- */
+.ezc-h2 {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-weight: 800;
+  color: var(--color-ink);
+}
+.ezc-h2--center {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Form + image ---------- */
+.ezc-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: stretch;
+}
+.ezc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 34rem;
+}
+.ezc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+.ezc-field > span {
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.ezc-field b {
+  color: var(--color-accent);
+}
+.ezc-field input,
+.ezc-field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ezc-field textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+.ezc-field input:focus-visible,
+.ezc-field textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 28%, transparent);
+}
+.ezc-field [aria-invalid='true'] {
+  border-color: #e5484d;
+}
+.ezc-field small {
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+}
+.ezc-err {
+  font-style: normal;
+  font-size: 0.82rem;
+  color: #e5484d;
+}
+.ezc-submit {
+  width: 100%;
+  justify-content: center;
+}
+.ezc-note {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: 1.7;
+  color: var(--color-ink);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+.ezc-fine {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--color-ink-muted);
+}
+
+.ezc-media {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--ezc-dark);
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.5);
+  min-height: 320px;
+}
+.ezc-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Location ---------- */
+.ezc-loc-sub {
+  margin: 0 0 1.75rem;
+  text-align: center;
+  color: var(--color-ink-muted);
+}
+.ezc-loc-card {
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+.ezc-loc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+.ezc-loc-head small {
+  color: var(--color-ink-muted);
+}
+.ezc-loc-head h3 {
+  margin: 0.2rem 0 0.4rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+.ezc-loc-head p {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+.ezc-map {
+  display: block;
+  width: 100%;
+  height: clamp(260px, 32vw, 380px);
+  border: 0;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .ezc {
+    gap: 3rem;
+  }
+  .ezc-main {
+    grid-template-columns: 1fr;
+  }
+  .ezc-form {
+    max-width: none;
+  }
+  .ezc-media {
+    order: -1;
+    min-height: 220px;
+    max-height: 280px;
+  }
+}
+@media (max-width: 560px) {
+  .ezc-loc-head .ez-btn-lg {
+    width: 100%;
+    justify-content: center;
+  }
+}

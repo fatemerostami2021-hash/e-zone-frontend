@@ -1,3 +1,6 @@
+/* ========================= */
+/* Base                      */
+/* ========================= */
 .ez-home,
 .ez-home *,
 .ez-home *::before,
@@ -30,25 +33,30 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .ez-btn-lg .btn-arrow {
   transition: transform 0.3s ease;
+}
+[dir='rtl'] .ez-btn-lg .btn-arrow {
+  transform: scaleX(-1);
 }
 
 .ez-btn-lg--primary {
   background: var(--color-primary);
   color: var(--color-primary-ink);
 }
-
 .ez-btn-lg--primary:hover {
   filter: brightness(1.1);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--color-primary) 40%, transparent);
 }
-
 .ez-btn-lg--primary:hover .btn-arrow {
   transform: translateX(4px);
+}
+[dir='rtl'] .ez-btn-lg--primary:hover .btn-arrow {
+  transform: translateX(-4px) scaleX(-1);
 }
 
 .ez-btn-lg--outline {
@@ -57,7 +65,6 @@
   color: var(--color-ink);
   backdrop-filter: blur(4px);
 }
-
 .ez-btn-lg--outline:hover {
   background: var(--color-surface);
   border-color: var(--color-primary);
@@ -70,70 +77,151 @@
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
+  inset-inline-start: -100%;
   width: 100%;
   height: 100%;
   background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: all 0.6s;
 }
-
 .ez-btn-lg:hover::before {
-  left: 100%;
+  inset-inline-start: 100%;
+}
+
+.ez-btn-lg:active {
+  transform: scale(0.97);
 }
 
 /* ========================= */
-/* Full-Width Single Hero    */
+/* Hero — Cinematic 3 Column */
 /* ========================= */
 .ezh-hero-fullwidth {
   position: relative;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  margin-block-start: 0;
-  min-height: 92vh;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  background-size: cover;
-  background-position: top center;
-  isolation: isolate;
-  padding-block: clamp(3rem, 8vh, 6rem);
+  align-items: center;
+  padding-block: clamp(2rem, 5vh, 3.5rem);
+  overflow: hidden;
 }
 
-.ezh-hero-overlay {
+.ezh-hero-cinematic {
+  isolation: isolate;
+  min-height: min(92vh, 920px);
+  padding-block: clamp(2.5rem, 7vh, 4.5rem);
+}
+
+.ezh-hero-cinematic-bg {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  background-size: cover;
+  background-position: center 40%;
+  filter: saturate(1.08) contrast(1.05);
+  animation: ezh-ken-burns-bg 28s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+.ezh-hero-cine-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-bg) 35%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg) 78%, transparent) 65%,
-    color-mix(in srgb, var(--color-bg) 92%, transparent) 100%
-  );
+  pointer-events: none;
+  background:
+    linear-gradient(105deg, color-mix(in srgb, var(--color-bg) 92%, transparent) 0%, transparent 42%),
+    linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-bg) 35%, transparent) 100%),
+    radial-gradient(ellipse 80% 60% at 70% 40%, color-mix(in srgb, var(--color-primary) 18%, transparent), transparent 65%);
+}
+
+.ezh-hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, color-mix(in srgb, black 55%, transparent) 100%);
+  opacity: 0.55;
+}
+
+.ezh-hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: ezh-grain-shift 0.45s steps(2) infinite;
+}
+
+.ezh-hero-letterbox {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ezh-letterbox-bar {
+  height: clamp(0.35rem, 2.5vh, 0.85rem);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.35));
+  opacity: 0.85;
+}
+.ezh-hero-letterbox .ezh-letterbox-bar:last-child {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.35));
 }
 
 .ezh-hero-grid {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   width: 100%;
-  max-width: 78rem;
+  max-width: none;
   margin-inline: auto;
-  padding-inline: clamp(1.5rem, 6vw, 5rem);
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: 1.1fr minmax(240px, 0.85fr) 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
   align-items: center;
 }
 
+@keyframes ezh-ken-burns-bg {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+
+@keyframes ezh-grain-shift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-2%, 1%); }
+}
+
+/* Hero entrance */
+.ezh-cine-in {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  animation: ezh-cine-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.ezh-cine-in--1 { animation-delay: 0.1s; }
+.ezh-cine-in--2 { animation-delay: 0.22s; }
+.ezh-cine-in--3 { animation-delay: 0.34s; }
+.ezh-cine-in--4 { animation-delay: 0.46s; }
+.ezh-cine-in--5 { animation-delay: 0.55s; }
+.ezh-cine-in--6 { animation-delay: 0.65s; }
+
+@keyframes ezh-cine-fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Hero Content ---- */
 .ezh-hero-content {
   min-width: 0;
   text-align: start;
 }
 
 .ezh-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: inline-block;
   background: color-mix(in srgb, var(--color-accent) 15%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
   color: var(--color-accent);
@@ -141,83 +229,568 @@
   border-radius: 999px;
   font-size: var(--text-small);
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   backdrop-filter: blur(5px);
 }
 
 .ezh-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
   font-weight: 900;
   line-height: 1.15;
-  letter-spacing: -0.01em;
-  margin: 0 0 1.5rem;
-  background: linear-gradient(135deg, var(--color-ink) 0%, var(--color-primary) 100%);
+  margin: 0 0 1.25rem;
+  background: linear-gradient(
+    125deg,
+    var(--color-ink) 0%,
+    color-mix(in srgb, var(--color-primary) 85%, var(--color-accent)) 45%,
+    var(--color-primary) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  filter: drop-shadow(0 0 28px color-mix(in srgb, var(--color-primary) 25%, transparent));
 }
 
 .ezh-hero-sub {
   color: var(--color-ink-muted);
-  font-size: 1.05rem;
-  line-height: 1.7;
-  margin: 0 0 2rem;
-  max-width: 38rem;
+  font-size: 1rem;
+  margin: 0 0 1.75rem;
+  max-width: 34rem;
   font-weight: 500;
+  line-height: 1.7;
 }
 
 .ezh-hero-actions {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
 
-.ezh-hero-panel {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+/* ---- Glass Mockup (Middle Column) ---- */
+.ezh-mockup {
+  position: relative;
+  width: 100%;
+  background: color-mix(in srgb, var(--color-surface) 55%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
   border-radius: var(--radius-md);
-  padding: 1.75rem;
+  box-shadow:
+    0 30px 60px -15px rgba(0, 0, 0, 0.3),
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 10%, transparent);
+  overflow: hidden;
+  transform: perspective(900px) rotateX(2deg) rotateY(-3deg);
+  transition: transform 0.35s ease;
+  align-self: center;
+}
+[dir='rtl'] .ezh-mockup {
+  transform: perspective(900px) rotateX(2deg) rotateY(3deg);
+}
+.ezh-mockup:hover {
+  transform: perspective(900px) rotateX(0deg) rotateY(0deg);
 }
 
-.ezh-hero-panel-label {
-  color: var(--color-accent);
-  font-size: var(--text-small);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.ezh-mockup--cine {
+  animation: ezh-mockup-glow 4s ease-in-out infinite;
 }
-.ezh-hero-panel-title { font-size: var(--text-h2); font-weight: 700; margin: 0.35rem 0 1.5rem; color: var(--color-ink); }
-.ezh-hero-panel-graphic {
+
+@keyframes ezh-mockup-glow {
+  0%, 100% {
+    box-shadow:
+      0 30px 60px -15px rgba(0, 0, 0, 0.3),
+      0 0 0 1px color-mix(in srgb, var(--color-primary) 10%, transparent),
+      0 0 24px color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 30px 60px -15px rgba(0, 0, 0, 0.3),
+      0 0 0 1px color-mix(in srgb, var(--color-primary) 22%, transparent),
+      0 0 40px color-mix(in srgb, var(--color-primary) 18%, transparent);
+  }
+}
+
+.ezh-hud-label {
+  animation: ezh-hud-flicker 5s steps(1) infinite;
+}
+
+@keyframes ezh-hud-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.55; }
+  94% { opacity: 1; }
+  96% { opacity: 0.7; }
+}
+
+.ezh-mockup-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 1.5rem 0;
-  margin-bottom: 0.5rem;
-  color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  border-radius: var(--radius-sm);
+  gap: 0.6rem;
+  padding: 0.65rem 0.85rem;
+  border-block-end: 1px solid var(--color-border);
 }
-.ezh-hero-panel-footer {
+.ezh-mockup-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+.ezh-mockup-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-ink-muted) 45%, transparent);
+}
+.ezh-mockup-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-ink-muted);
+}
+
+.ezh-mockup-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-block-end: 1px solid var(--color-border);
+}
+.ezh-mockup-stats div {
+  padding: 0.75rem 0.35rem;
+  text-align: center;
+  border-inline-start: 1px solid var(--color-border);
+}
+.ezh-mockup-stats div:first-child {
+  border-inline-start: none;
+}
+.ezh-mockup-stats strong {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+.ezh-mockup-stats span {
+  font-size: 0.68rem;
+  color: var(--color-ink-muted);
+}
+
+.ezh-mockup-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.ezh-mockup-rows li {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  font-size: var(--text-small);
+  align-items: center;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-bg) 55%, transparent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.5rem;
+}
+.ezh-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.ezh-badge--ok {
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  color: var(--color-accent);
+}
+.ezh-badge--pending {
+  background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+  color: var(--color-primary);
+}
+.ezh-badge--wait {
+  background: color-mix(in srgb, var(--color-ink-muted) 25%, transparent);
   color: var(--color-ink-muted);
-  border-block-start: 1px solid var(--color-border);
-  padding-top: 0.85rem;
 }
 
-.ezh-hero-panel--glass {
+/* ---- Visual (Last Column) + 3D ---- */
+.ezh-hero-visual {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  perspective: 1400px;
+}
+
+.ezh-hero-3d-layer {
+  position: absolute;
+  inset: -15%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ezh-3d-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.55;
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--color-accent) 70%, white), transparent 70%);
+  animation: ezh-orb-float 12s ease-in-out infinite;
+}
+.ezh-3d-shape--1 { width: 48px; height: 48px; top: 12%; inset-inline-start: 8%; animation-duration: 14s; }
+.ezh-3d-shape--2 { width: 72px; height: 72px; bottom: 18%; inset-inline-end: 5%; animation-delay: -3s; animation-duration: 18s; filter: blur(8px); opacity: 0.35; }
+.ezh-3d-shape--3 { width: 24px; height: 24px; top: 55%; inset-inline-start: 20%; animation-delay: -6s; background: radial-gradient(circle, color-mix(in srgb, var(--color-primary) 80%, white), transparent); }
+.ezh-3d-shape--4 { width: 96px; height: 96px; top: -5%; inset-inline-end: 25%; animation-delay: -2s; animation-duration: 22s; filter: blur(12px); opacity: 0.25; }
+.ezh-3d-shape--5 { width: 36px; height: 36px; bottom: 8%; inset-inline-start: 35%; animation-delay: -8s; animation-duration: 16s; }
+
+@keyframes ezh-orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(8px, -14px) scale(1.05); }
+  66% { transform: translate(-10px, 8px) scale(0.95); }
+}
+
+.ezh-hero-side {
+  position: absolute;
+  z-index: 4;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 35%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 65%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--color-primary);
+  animation: ezh-side-drift 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.ezh-hero-side--start {
+  top: 8%;
+  inset-inline-start: -4%;
+  animation-delay: 0s;
+}
+.ezh-hero-side--end {
+  bottom: 10%;
+  inset-inline-end: -2%;
+  animation-delay: -4s;
+  color: var(--color-accent);
+  border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+@keyframes ezh-side-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.ezh-hero-visual-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  transform-style: preserve-3d;
+  transform: rotateY(-8deg) rotateX(4deg);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 2;
+}
+[dir='rtl'] .ezh-hero-visual-stage {
+  transform: rotateY(8deg) rotateX(4deg);
+}
+.ezh-hero-visual-stage:hover {
+  transform: rotateY(0deg) rotateX(0deg);
+}
+
+.ezh-hero-visual-img,
+.ezh-hero-visual-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center 35%;
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  box-shadow:
+    0 40px 80px -20px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 color-mix(in srgb, white 15%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 12%, transparent);
+  z-index: 2;
+  transition: transform 0.5s ease;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.ezh-hero-visual-img.ezh-ken-burns {
+  animation: ezh-ken-burns-img 24s ease-in-out infinite alternate;
+}
+
+@keyframes ezh-ken-burns-img {
+  0% { background-position: center 32%; transform: scale(1); }
+  100% { background-position: center 48%; transform: scale(1.04); }
+}
+
+.ezh-hero-visual-stage:hover .ezh-hero-visual-img,
+.ezh-hero-visual-stage:hover .ezh-hero-visual-video {
+  transform: translateZ(20px) scale(1.02);
+}
+
+.ezh-hero-visual-stage:hover .ezh-hero-visual-img.ezh-ken-burns {
+  animation-play-state: paused;
+}
+
+.ezh-hero-visual-glow {
+  position: absolute;
+  inset: -12%;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-primary) 35%, transparent) 0%,
+    transparent 60%
+  );
+  filter: blur(60px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.ezh-hero-visual-stage::before {
+  content: '';
+  position: absolute;
+  inset: 1.25rem -1.25rem -1.25rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+  border-radius: var(--radius-md);
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+[dir='rtl'] .ezh-hero-visual-stage::before {
+  inset: 1.25rem 1.25rem -1.25rem -1.25rem;
+}
+.ezh-hero-visual-stage:hover::before {
+  transform: translate(6px, 6px);
+}
+/* ========================= */
+/* Hero — Video Banner       */
+/* ========================= */
+.ezh-vhero {
+  position: relative;
+  width: 100%;
+  margin-inline: 0;
+  padding-inline: 0;
+  display: block;
+}
+
+/* ---------- بنر ویدیو: چسبیده به هدر، تمام عرض داخل گاتر ---------- */
+.ezh-vhero-banner {
+  position: relative;
+  width: 100%;
+  min-height: clamp(560px, 82vh, 900px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  isolation: isolate;
+}
+
+.ezh-vhero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  z-index: 0;
+}
+
+/* ---------- پرده‌ی تیره برای خوانایی متن روی ویدیو ---------- */
+.ezh-vhero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    /* گرادیان افقی — از سمت شروع (چپ در LTR / راست در RTL) تیره‌تر */
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--color-bg) 85%, transparent) 0%,
+      color-mix(in srgb, var(--color-bg) 50%, transparent) 40%,
+      transparent 72%),
+    /* گرادیان عمودی — بالا و پایین تیره‌تر برای کنتراست */
+    linear-gradient(180deg,
+      color-mix(in srgb, black 45%, transparent) 0%,
+      transparent 28%,
+      color-mix(in srgb, black 60%, transparent) 100%);
+}
+
+[dir='rtl'] .ezh-vhero-shade {
+  background:
+    linear-gradient(270deg,
+      color-mix(in srgb, var(--color-bg) 85%, transparent) 0%,
+      color-mix(in srgb, var(--color-bg) 50%, transparent) 40%,
+      transparent 72%),
+    linear-gradient(180deg,
+      color-mix(in srgb, black 45%, transparent) 0%,
+      transparent 28%,
+      color-mix(in srgb, black 60%, transparent) 100%);
+}
+
+/* ---------- بدنه‌ی هیرو: روی ویدیو، گرید دو ستونه ---------- */
+
+.ezh-vhero-body {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  pointer-events: none;
+}
+
+.ezh-vhero-body > * {
+  pointer-events: auto;
+}
+
+/* ---------- کارت شیشه‌ای سبزآبی دور متن ---------- */
+/* ---------- کارت شیشه‌ای سبزآبی شفاف دور متن ---------- */
+.ezh-vhero-body .ezh-hero-content {
+  position: relative;
   min-width: 0;
-  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.75rem, 3vw, 2.75rem) clamp(1.75rem, 3vw, 3rem);
+  border-radius: var(--radius-md);
+
+  /* شفاف‌تر — آلفا از 16% به 6% کاهش یافت */
+  background: color-mix(
+    in srgb,
+    var(--color-accent) 8%,
+    color-mix(in srgb, var(--color-surface) 18%, transparent)
+  );
+
+  /* blur کمتر تا ویدیو دیده بشه */
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+
+  /* حاشیه‌ی سبزآبی نازک‌تر ولی واضح‌تر */
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+
+  /* سایه‌ی نرم‌تر تا پنل جدا از ویدیو دیده بشه */
+  box-shadow:
+    0 20px 50px -18px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+/* ---------- متن روی ویدیو باید روشن باشه (حتی در تم روشن) ---------- */
+.ezh-vhero-body .ezh-hero-title {
+  background: linear-gradient(
+    125deg,
+    #ffffff 0%,
+    color-mix(in srgb, var(--color-accent) 65%, white) 45%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 20px rgba(0, 0, 0, 0.55));
 }
 
+.ezh-vhero-body .ezh-hero-sub {
+  color: color-mix(in srgb, white 94%, var(--color-accent));
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.65);
+}
+
+.ezh-vhero-body .ezh-pill {
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 75%, transparent);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+[dir='rtl'] .ezh-vhero-body .ezh-pill {
+  align-self: flex-start;
+}
+
+/* ---------- دکمه‌ی outline روی ویدیو خوانا باشه ---------- */
+.ezh-vhero-body .ez-btn-lg--outline {
+  color: #ffffff;
+  border-color: color-mix(in srgb, white 55%, transparent);
+  background: color-mix(in srgb, black 28%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.ezh-vhero-body .ez-btn-lg--outline:hover {
+  background: color-mix(in srgb, white 20%, transparent);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* ---------- موکاپ روی ویدیو ---------- */
+.ezh-vhero-body .ezh-mockup {
+  position: relative;
+  inset: auto;
+  bottom: auto;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  transform: none;
+  animation: none;
+  align-self: center;
+}
+
+/* ========================= */
+/* ریسپانسیو هیرو             */
+/* ========================= */
+
+@media (max-width: 1100px) {
+  .ezh-vhero-body {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+  }
+  .ezh-vhero-body .ezh-mockup {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 900px) {
+  .ezh-vhero-banner {
+    min-height: clamp(600px, 92vh, 820px);
+  }
+  .ezh-vhero-body {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-content: center;
+    overflow-y: auto;
+    padding: clamp(1.5rem, 5vw, 2rem) clamp(1rem, 4vw, 1.75rem);
+  }
+  .ezh-vhero-body .ezh-hero-content {
+    padding: 1.5rem 1.25rem;
+  }
+  .ezh-vhero-body .ezh-mockup {
+    max-width: 100%;
+  }
+  /* روی موبایل گرادیان عمودی جای افقی رو می‌گیره */
+  .ezh-vhero-shade,
+  [dir='rtl'] .ezh-vhero-shade {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, black 60%, transparent) 0%,
+      color-mix(in srgb, black 40%, transparent) 45%,
+      color-mix(in srgb, black 75%, transparent) 100%
+    );
+  }
+}
+
+@media (max-width: 520px) {
+  .ezh-vhero-banner {
+    min-height: clamp(620px, 95vh, 780px);
+  }
+  .ezh-vhero-body .ezh-hero-title {
+    font-size: 1.5rem;
+  }
+  .ezh-vhero-body .ezh-hero-sub {
+    font-size: 0.95rem;
+  }
+}
 /* ========================= */
 /* Trusted                   */
 /* ========================= */
@@ -226,22 +799,87 @@
   padding: 2rem 0;
   text-align: center;
 }
-.ezh-trusted-label { color: var(--color-ink-muted); font-size: var(--text-small); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-.ezh-trusted-row { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
-.ezh-trusted-item { font-weight: 600; font-size: var(--text-body); color: var(--color-ink-muted); transition: color 0.2s; }
-.ezh-trusted-item:hover { color: var(--color-primary); }
+.ezh-trusted-label {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.ezh-trusted-marquee {
+  display: none;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  margin-bottom: 0.5rem;
+}
+.ezh-trusted-track {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  animation: ezh-trusted-scroll 28s linear infinite;
+}
+@keyframes ezh-trusted-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+[dir='rtl'] .ezh-trusted-track {
+  animation-name: ezh-trusted-scroll-rtl;
+}
+@keyframes ezh-trusted-scroll-rtl {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(50%); }
+}
+
+@media (min-width: 769px) {
+  .ezh-trusted-marquee {
+    display: block;
+  }
+  .ezh-trusted-row {
+    display: none;
+  }
+}
+
+.ezh-trusted-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.ezh-trusted-item {
+  font-weight: 600;
+  font-size: var(--text-body);
+  color: var(--color-ink-muted);
+  transition: color 0.2s;
+}
+.ezh-trusted-item:hover {
+  color: var(--color-primary);
+}
 
 /* ========================= */
 /* Typography & Sections     */
 /* ========================= */
-.ezh-section { display: flex; flex-direction: column; padding: 0 1rem; }
-.ezh-eyebrow { color: var(--color-accent); font-size: var(--text-small); font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+.ezh-section {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+}
+.ezh-eyebrow {
+  color: var(--color-accent);
+  font-size: var(--text-small);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
 
 .ezh-section-title {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
   font-weight: 900;
   margin: 0.75rem 0 1.25rem;
   line-height: 1.2;
+  text-align: start;
   background: linear-gradient(135deg, var(--color-ink) 0%, color-mix(in srgb, var(--color-ink) 70%, var(--color-primary)) 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -252,8 +890,9 @@
   color: var(--color-ink-muted);
   max-width: 45rem;
   margin-bottom: 2rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1.7;
+  text-align: start;
 }
 
 /* ========================= */
@@ -267,13 +906,13 @@
   background: var(--color-surface);
   border-radius: var(--radius-md);
   overflow: hidden;
+  padding: 0;
 }
 
 .ezh-fullbleed-split .ezh-split-media {
   height: 100%;
   min-height: 400px;
 }
-
 .ezh-fullbleed-split .ezh-split-media img {
   width: 100%;
   height: 100%;
@@ -281,21 +920,31 @@
   border-radius: 0;
   border: none;
 }
-
 .ezh-fullbleed-split .ezh-split-copy {
   padding: 4rem 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: start;
 }
 
 /* ========================= */
 /* Grids & Cards             */
 /* ========================= */
-.ezh-stats-grid, .ezh-features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 1rem; }
-.ezh-features-grid { grid-template-columns: repeat(3, 1fr); }
+.ezh-stats-grid,
+.ezh-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+.ezh-features-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
 
-.ezh-stat-card, .ezh-feature-card {
+.ezh-stat-card,
+.ezh-feature-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -303,60 +952,161 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  text-align: start;
 }
-
-.ezh-stat-card::before, .ezh-feature-card::before {
+.ezh-stat-card::before,
+.ezh-feature-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  inset-inline-start: 0;
   width: 4px;
   height: 0;
   background: var(--color-primary);
   transition: height 0.3s ease;
 }
 
-.ezh-stat-card:hover, .ezh-feature-card:hover {
+.ezh-stat-card::after,
+.ezh-feature-card::after,
+.ezh-roadmap-card::after,
+.ezh-step-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    color-mix(in srgb, var(--color-primary) 12%, transparent) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.65s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.ezh-stat-card:hover,
+.ezh-feature-card:hover {
   transform: translateY(-5px);
   border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.08),
+    0 4px 12px color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
-
-.ezh-stat-card:hover::before, .ezh-feature-card:hover::before {
+.ezh-stat-card:hover::before,
+.ezh-feature-card:hover::before {
   height: 100%;
 }
+.ezh-stat-card:hover::after,
+.ezh-feature-card:hover::after,
+.ezh-roadmap-card:hover::after {
+  transform: translateX(120%);
+}
 
-.ezh-icon-accent { color: var(--color-accent); }
-.ezh-stat-value { font-size: clamp(2rem, 3vw, 3rem); font-weight: 900; margin: 0.5rem 0; color: var(--color-primary); }
-.ezh-stat-title { font-weight: 700; margin-bottom: 0.5rem; font-size: 1.2rem; }
-.ezh-stat-desc, .ezh-feature-card p { color: var(--color-ink-muted); font-size: var(--text-small); line-height: 1.6; }
+.ezh-icon-accent {
+  color: var(--color-accent);
+}
+.ezh-stat-value {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 900;
+  margin: 0.5rem 0;
+  color: var(--color-primary);
+}
+.ezh-stat-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+}
+.ezh-stat-desc,
+.ezh-feature-card p {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  line-height: 1.65;
+}
 
 .ezh-feature-icon {
-  width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  color: var(--color-accent); border-radius: var(--radius-sm); margin-bottom: 1.25rem;
+  color: var(--color-accent);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.25rem;
 }
-.ezh-feature-card h3 { margin: 0 0 0.75rem; font-size: 1.3rem; font-weight: 700; }
+.ezh-feature-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
 
 /* Steps */
-.ezh-steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 1rem; }
-.ezh-step-card { position: relative; padding: 2rem 1.5rem; border-radius: var(--radius-md); transition: all 0.3s; }
-.ezh-step-card::after { content: ''; position: absolute; inset: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); z-index: -1; transition: all 0.3s; }
-.ezh-step-card:hover::after { border-color: var(--color-primary); transform: translateY(-5px); }
-
-.ezh-step-num {
-  width: 48px; height: 48px; border-radius: 50%; background: var(--color-primary); color: var(--color-primary-ink);
-  display: flex; align-items: center; justify-content: center; font-weight: 900; margin-bottom: 1rem; font-size: 1.1rem;
+.ezh-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+  width: 100%;
 }
-.ezh-step-card h3 { margin: 0 0 0.5rem; font-size: 1.2rem; font-weight: 700; }
-.ezh-step-card p { color: var(--color-ink-muted); font-size: var(--text-small); margin: 0; }
+.ezh-step-card {
+  position: relative;
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius-md);
+  transition: all 0.3s;
+  text-align: start;
+  overflow: hidden;
+}
+.ezh-step-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  z-index: -2;
+  transition: all 0.3s;
+}
+.ezh-step-card::after {
+  z-index: 1;
+}
+.ezh-step-card:hover::before {
+  border-color: var(--color-primary);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+.ezh-step-card:hover::after {
+  transform: translateX(120%);
+}
+.ezh-step-num {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-primary-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.ezh-step-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.ezh-step-card p {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  margin: 0;
+  line-height: 1.65;
+}
 
 /* ========================= */
-/* Logistics split — small,  */
-/* clear image (left) + copy */
-/* (right), fixed physically */
+/* Logistics Split           */
 /* ========================= */
 .ezh-logistics-split {
-  direction: ltr; /* keeps the image physically on the left regardless of site language */
+  direction: ltr;
   display: grid;
   grid-template-columns: minmax(200px, 320px) 1fr;
   gap: clamp(1.5rem, 4vw, 3rem);
@@ -389,64 +1139,639 @@
 .ezh-logistics-copy {
   min-width: 0;
 }
+.ezh-logistics-copy[dir='rtl'] {
+  text-align: right;
+}
+.ezh-logistics-copy[dir='ltr'] {
+  text-align: left;
+}
 
-/* text direction/alignment follows the current language, independent of the fixed ltr grid above */
-.ezh-logistics-copy[dir='rtl'] { text-align: right; }
-.ezh-logistics-copy[dir='ltr'] { text-align: left; }
-
-
-/* Architecture */
-.ezh-arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+/* ========================= */
+/* Architecture              */
+/* ========================= */
+.ezh-arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
 .ezh-arch-media img {
   width: 100%;
   height: auto;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+.ezh-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.ezh-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
-.ezh-checklist { list-style: none; padding: 0; margin: 2rem 0 0; display: flex; flex-direction: column; gap: 1rem; }
-.ezh-checklist li { display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 1.05rem; }
+/* ========================= */
+/* Roadmap                   */
+/* ========================= */
+.ezh-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+.ezh-roadmap-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.3s;
+  text-align: start;
+  position: relative;
+  overflow: hidden;
+}
+.ezh-roadmap-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.07),
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+.ezh-status--activeDev {
+  border-color: var(--color-primary);
+}
+.ezh-roadmap-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+.ezh-roadmap-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-primary);
+  font-size: var(--text-small);
+  font-weight: 800;
+}
+.ezh-roadmap-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ezh-status--deployed .ezh-roadmap-badge {
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  color: var(--color-accent);
+}
+.ezh-status--activeDev .ezh-roadmap-badge {
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  color: var(--color-primary);
+}
+.ezh-status--upcoming .ezh-roadmap-badge {
+  background: color-mix(in srgb, var(--color-ink-muted) 15%, transparent);
+  color: var(--color-ink-muted);
+}
+.ezh-roadmap-card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.4rem;
+  font-weight: 700;
+}
+.ezh-roadmap-card p {
+  color: var(--color-ink-muted);
+  font-size: var(--text-small);
+  margin: 0;
+  line-height: 1.6;
+}
 
-/* Roadmap */
-.ezh-roadmap-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; margin-top: 1rem; }
-.ezh-roadmap-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.3s; }
-.ezh-roadmap-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+/* ========================= */
+/* CTA                       */
+/* ========================= */
+.ezh-cta {
+  text-align: center;
+  align-items: center;
+  padding: 3.5rem 1rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+.ezh-cta-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  color: var(--color-ink);
+}
+.ezh-cta .ezh-section-sub {
+  margin-inline: auto;
+  text-align: center;
+}
+.ezh-cta .ezh-hero-actions {
+  justify-content: center;
+  margin-top: 1rem;
+}
 
-.ezh-status--activeDev { border-color: var(--color-primary); }
-.ezh-roadmap-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.ezh-roadmap-phase { display: flex; align-items: center; gap: 0.35rem; color: var(--color-primary); font-size: var(--text-small); font-weight: 800; }
-.ezh-roadmap-badge { font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.6rem; border-radius: var(--radius-sm); text-transform: uppercase; }
-.ezh-status--deployed .ezh-roadmap-badge { background: color-mix(in srgb, var(--color-accent) 15%, transparent); color: var(--color-accent); }
-.ezh-status--activeDev .ezh-roadmap-badge { background: color-mix(in srgb, var(--color-primary) 15%, transparent); color: var(--color-primary); }
-.ezh-status--upcoming .ezh-roadmap-badge { background: color-mix(in srgb, var(--color-ink-muted) 15%, transparent); color: var(--color-ink-muted); }
-.ezh-roadmap-card h3 { font-size: 1.1rem; margin: 0 0 0.5rem; font-weight: 700; }
-.ezh-roadmap-card p { color: var(--color-ink-muted); font-size: var(--text-small); margin: 0; line-height: 1.6; }
+/* ========================= */
+/* Scroll reveal             */
+/* ========================= */
+.ezh-reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ezh-reveal--d1 { transition-delay: 0.08s; }
+.ezh-reveal--d2 { transition-delay: 0.16s; }
+.ezh-reveal.ezh-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-/* CTA */
-.ezh-cta { text-align: center; align-items: center; padding: 4rem 1rem; background: var(--color-surface); border-radius: var(--radius-md); }
-.ezh-cta-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 1rem; color: var(--color-ink); }
-.ezh-cta .ezh-section-sub { margin-left: auto; margin-right: auto; }
-.ezh-cta .ezh-hero-actions { justify-content: center; margin-top: 1rem; }
+/* ========================= */
+/* Loading state             */
+/* ========================= */
+.ezh-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  color: var(--color-ink-muted);
+  font-weight: 600;
+}
 
 /* ========================= */
 /* Responsive                */
 /* ========================= */
+
+/* بزرگ: هیرو ۲ ستونه (متن+عکس)، کادر زیر */
+@media (max-width: 1100px) {
+  .ezh-hero-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "content visual"
+      "mockup  mockup";
+    gap: 2rem;
+  }
+  .ezh-hero-content { grid-area: content; }
+  .ezh-hero-visual  { grid-area: visual; }
+  .ezh-mockup {
+    grid-area: mockup;
+    max-width: 520px;
+    margin-inline: auto;
+    transform: none;
+  }
+  .ezh-mockup:hover { transform: none; }
+  .ezh-hero-visual-stage {
+    transform: none;
+  }
+  [dir='rtl'] .ezh-hero-visual-stage {
+    transform: none;
+  }
+  .ezh-hero-side {
+    display: none;
+  }
+  .ezh-hero-cinematic {
+    min-height: auto;
+  }
+}
+
+/* تبلت: بخش‌های دیگه */
 @media (max-width: 1024px) {
-  .ezh-roadmap-grid { grid-template-columns: repeat(3, 1fr); }
+  .ezh-roadmap-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ezh-arch-grid {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .ez-home {
+    gap: 3rem;
+  }
+}
+
+/* موبایل بزرگ */
+@media (max-width: 768px) {
+  .ez-home {
+    gap: 2.5rem;
+  }
+
+  .ezh-hero-cinematic-bg {
+    animation: none;
+    transform: scale(1.05);
+  }
+  .ezh-hero-grain {
+    opacity: 0.04;
+    animation: none;
+  }
+  .ezh-letterbox-bar {
+    height: 0.25rem;
+    opacity: 0.5;
+  }
+  .ezh-3d-shape {
+    animation-duration: 20s;
+    opacity: 0.3;
+  }
+  .ezh-hero-visual-img.ezh-ken-burns {
+    animation: none;
+  }
+  .ezh-mockup--cine {
+    animation: none;
+  }
+
+  .ezh-hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "visual"
+      "content"
+      "mockup";
+    gap: 1.75rem;
+    padding-inline: 1.25rem;
+  }
+  .ezh-hero-title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+  .ezh-mockup {
+    max-width: 100%;
+  }
+
+  .ezh-fullbleed-split,
+  .ezh-arch-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .ezh-fullbleed-split .ezh-split-copy {
+    padding: 2rem 1.5rem;
+  }
+
+  .ezh-stats-grid,
+  .ezh-features-grid,
+  .ezh-steps-grid,
+  .ezh-roadmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ezh-logistics-split {
+    grid-template-columns: 1fr;
+    direction: unset;
+    text-align: center;
+  }
+  .ezh-logistics-media {
+    max-width: 220px;
+    margin-inline: auto;
+  }
+
+}
+
+/* کاهش حرکت */
+@media (prefers-reduced-motion: reduce) {
+  .ezh-hero-cinematic-bg,
+  .ezh-hero-grain,
+  .ezh-hero-visual-img.ezh-ken-burns,
+  .ezh-3d-shape,
+  .ezh-hero-side,
+  .ezh-mockup--cine,
+  .ezh-hud-label,
+  .ezh-trusted-track,
+  .ezh-cine-in {
+    animation: none !important;
+  }
+  .ezh-cine-in,
+  .ezh-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* موبایل کوچک */
+@media (max-width: 520px) {
+  .ezh-hero-title {
+    font-size: 1.5rem;
+  }
+  .ezh-hero-sub {
+    font-size: 0.95rem;
+  }
+  .ezh-stats-grid,
+  .ezh-features-grid,
+  .ezh-steps-grid,
+  .ezh-roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ========================= */
+/* Wide layout (~5cm gutters) */
+/* ========================= */
+.ez-home {
+  width: 100%;
+  padding-inline: var(--page-gutter);
+  overflow-x: visible;
+}
+
+.ezh-section {
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* ویدیو و بدنه‌ی هیرو با ۱rem داخل‌تر تا با محتوای سکشن‌ها هم‌تراز بشن */
+.ezh-vhero {
+  width: 100%;
+  margin-inline: 0;
+  padding-inline: 1rem;
+}
+.ezh-vhero-banner {
+  border-radius: var(--radius-md);
+}
+.ezh-vhero-body {
+  padding-inline: 0;
+}
+
+/* ========================= */
+/* Hero — Mobile / Tablet fix */
+/* ========================= */
+@media (max-width: 1100px) {
+  .ezh-vhero {
+    display: grid;
+  }
+  .ezh-vhero-banner,
+  .ezh-vhero-body {
+    grid-area: 1 / 1;
+  }
+  .ezh-vhero-banner {
+    height: auto;
+    align-self: stretch;
+  }
+  .ezh-vhero-body {
+    position: relative;
+    inset: auto;
+    overflow: visible;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    align-content: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .ezh-vhero-banner {
+    min-height: 0;
+    height: auto;
+  }
+  .ezh-vhero-body {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    overflow-y: visible;
+    padding: 1rem;
+  }
+  .ezh-vhero-body .ezh-hero-content {
+    padding: 1.5rem 1.25rem;
+  }
+  .ezh-vhero-body .ezh-hero-sub {
+    max-width: none;
+  }
+  .ezh-vhero-body .ezh-mockup {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .ezh-vhero {
+    padding-inline: 0.5rem;
+  }
+  .ezh-vhero-body {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+  .ezh-vhero-body .ezh-hero-content {
+    padding: 1.25rem 1rem;
+  }
+  .ezh-vhero-body .ezh-hero-title {
+    font-size: 1.4rem;
+  }
+  .ezh-vhero-body .ezh-hero-sub {
+    font-size: 0.92rem;
+    margin-bottom: 1.25rem;
+  }
+  .ezh-vhero-body .ezh-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ezh-vhero-body .ez-btn-lg {
+    width: 100%;
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+  .ezh-vhero-body .ezh-mockup-stats strong {
+    font-size: 1rem;
+  }
+  .ezh-vhero-body .ezh-mockup-rows li {
+    font-size: 0.72rem;
+  }
+}
+
+/* Reset old hero grid-areas inside video hero */
+@media (max-width: 1100px) {
+  .ezh-vhero-body .ezh-hero-content,
+  .ezh-vhero-body .ezh-mockup {
+    grid-area: auto;
+  }
+  .ezh-vhero-body .ezh-mockup {
+    grid-column: 1 / -1;
+    margin-inline: auto;
+  }
+}
+
+/* Mobile: video strip on top, text card below, mockup last */
+@media (max-width: 768px) {
+  .ezh-vhero {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-inline: 0.5rem;
+  }
+  .ezh-vhero-banner {
+    height: 34vh;
+    min-height: 200px;
+    max-height: 300px;
+    flex: none;
+  }
+  .ezh-vhero-shade {
+    background: linear-gradient(
+      180deg,
+      transparent 55%,
+      color-mix(in srgb, black 45%, transparent) 100%
+    );
+  }
+  .ezh-vhero-body {
+    position: static;
+    padding: 0;
+    gap: 1rem;
+  }
+  .ezh-vhero-body .ezh-hero-content {
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .ezh-vhero-body .ezh-mockup {
+    max-width: 100%;
+    grid-column: auto;
+  }
+}
+
+
+/* ========================= */
+/* Hero video: layered 3D    */
+/* ========================= */
+.ezh-vhero {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  isolation: isolate;
+  margin-bottom: 2.75rem;
+  transform: perspective(1400px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+
+/* دو لایه‌ی پشت ویدیو (جعبه‌ی پله‌ای) */
+.ezh-vhero::before,
+.ezh-vhero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline: 1rem;
+  z-index: -1;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 82%, var(--color-accent) 10%);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.45s ease, opacity 0.45s ease;
+}
+.ezh-vhero::before {
+  transform: translateY(16px) scale(0.965);
+  opacity: 0.9;
+  box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.65);
+}
+.ezh-vhero::after {
+  transform: translateY(32px) scale(0.93);
+  opacity: 0.55;
+  box-shadow: 0 22px 34px -16px rgba(0, 0, 0, 0.55);
+}
+.ezh-vhero:hover::before {
+  transform: translateY(24px) scale(0.965);
+  box-shadow: 0 18px 40px -12px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+.ezh-vhero:hover::after {
+  transform: translateY(46px) scale(0.93);
+  box-shadow: 0 22px 44px -14px color-mix(in srgb, var(--color-primary) 40%, transparent);
+}
+
+/* بنر: بدون بوردر، با عمق */
+.ezh-vhero-banner {
+  border: none;
+  box-shadow:
+    0 30px 60px -22px rgba(0, 0, 0, 0.75),
+    0 0 0 0 transparent;
+  transition: box-shadow 0.4s ease;
+}
+.ezh-vhero:hover .ezh-vhero-banner {
+  box-shadow:
+    0 30px 60px -22px rgba(0, 0, 0, 0.75),
+    0 0 40px color-mix(in srgb, var(--color-accent) 45%, transparent),
+    0 0 90px color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+/* نور دنبال ماوس */
+.ezh-vhero-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    circle 320px at var(--mx) var(--my),
+    color-mix(in srgb, var(--color-accent) 38%, transparent),
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+}
+.ezh-vhero:hover .ezh-vhero-banner::after {
+  opacity: 1;
+}
+
+/* زوم in/out آرام ویدیو */
+.ezh-vhero-video {
+  animation: ezh-video-breathe 14s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes ezh-video-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* موبایل: بدون شیب و لایه */
+@media (max-width: 768px) {
+  .ezh-vhero {
+    transform: none;
+    margin-bottom: 1.5rem;
+  }
+  .ezh-vhero::before,
+  .ezh-vhero::after {
+    display: none;
+  }
+}
+
+@media (hover: none) {
+  .ezh-vhero { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ezh-vhero-video { animation: none; }
+  .ezh-vhero { transform: none; }
+}
+/* ========================= */
+/* Hero: readable in light theme */
+/* ========================= */
+/* The text card is always dark glass, so its white text works in both themes */
+.ezh-vhero-body .ezh-hero-content {
+  background: linear-gradient(135deg, rgba(8, 20, 36, 0.66), rgba(8, 32, 44, 0.52));
+  border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Video overlay: dark neutral instead of the pale theme background */
+[data-theme='light'] .ezh-vhero-shade {
+  background:
+    linear-gradient(90deg, rgba(6, 14, 26, 0.55) 0%, rgba(6, 14, 26, 0.2) 50%, transparent 80%),
+    linear-gradient(180deg, rgba(6, 14, 26, 0.35) 0%, transparent 30%, rgba(6, 14, 26, 0.5) 100%);
+}
+[data-theme='light'][dir='rtl'] .ezh-vhero-shade {
+  background:
+    linear-gradient(270deg, rgba(6, 14, 26, 0.55) 0%, rgba(6, 14, 26, 0.2) 50%, transparent 80%),
+    linear-gradient(180deg, rgba(6, 14, 26, 0.35) 0%, transparent 30%, rgba(6, 14, 26, 0.5) 100%);
 }
 
 @media (max-width: 768px) {
-  .ez-home { gap: 2.5rem; }
-  .ezh-hero-fullwidth { min-height: 80vh; }
-  .ezh-hero-grid { grid-template-columns: 1fr; }
-  .ezh-hero-panel--glass { max-width: 26rem; margin-inline: auto; }
-
-  .ezh-fullbleed-split, .ezh-arch-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .ezh-fullbleed-split .ezh-split-copy { padding: 2rem 1.5rem; }
-
-  .ezh-stats-grid, .ezh-features-grid, .ezh-steps-grid, .ezh-roadmap-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .ezh-logistics-split { grid-template-columns: 1fr; direction: unset; text-align: center; }
-  .ezh-logistics-media { max-width: 220px; margin-inline: auto; }
+  .ezh-vhero-body .ezh-hero-content {
+    background: rgba(8, 20, 36, 0.86);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  [data-theme='light'] .ezh-vhero-shade,
+  [data-theme='light'][dir='rtl'] .ezh-vhero-shade {
+    background: linear-gradient(180deg, transparent 55%, rgba(6, 14, 26, 0.45) 100%);
+  }
 }

@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Sun, Moon, LogIn } from 'lucide-react';
 import { useTheme } from '../../theme/useTheme';
+import { GB, IR } from 'country-flag-icons/react/3x2';
 import './Header.css';
 
 function Header() {
@@ -88,7 +89,9 @@ function Header() {
             onClick={toggleLanguage}
             aria-label="Toggle language"
           >
-            <span className={`ez-flag ${isFa ? 'ez-flag--ir' : 'ez-flag--uk'}`} aria-hidden="true" />
+            <span className="ez-flag" aria-hidden="true">
+              {isFa ? <GB title="English" /> : <IR title="فارسی" />}
+            </span>
             <span className="ez-lang-label">{langLabel}</span>
           </button>
 

@@ -1,0 +1,369 @@
+.eza,
+.eza *,
+.eza *::before,
+.eza *::after {
+  box-sizing: border-box;
+}
+
+.eza {
+  --eza-dark: #0b1220;
+  --eza-dark-2: #101c33;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+  padding-inline: var(--page-gutter);
+  padding-block: 1rem 4rem;
+}
+
+/* ---------- Dark bands (dark in both themes so white text is always readable) ---------- */
+.eza-band {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  color: #fff;
+  background:
+    radial-gradient(ellipse 60% 90% at 85% 0%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 70% at 5% 100%, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 70%),
+    linear-gradient(160deg, var(--eza-dark), var(--eza-dark-2));
+  border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+.eza-band .ez-btn-lg--outline {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+}
+.eza-band .ez-btn-lg--outline:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+}
+.eza a.ez-btn-lg {
+  text-decoration: none;
+}
+[dir='rtl'] .eza-arrow {
+  transform: scaleX(-1);
+}
+
+/* ---------- Hero ---------- */
+.eza-hero {
+  min-height: clamp(280px, 40vh, 420px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.25rem;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
+}
+.eza-hero-title {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 3.75rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: #fff;
+}
+.eza-hero-sub {
+  margin: 0;
+  max-width: 44rem;
+  font-size: 1.1rem;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.82);
+}
+.eza-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ---------- Headings ---------- */
+.eza-h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+.eza-h2--light {
+  color: #fff;
+  margin: 0;
+}
+
+/* ---------- Intro ---------- */
+.eza-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+}
+.eza-intro-copy p {
+  margin: 0 0 1rem;
+  max-width: 34rem;
+  line-height: 1.9;
+  color: var(--color-ink-muted);
+}
+.eza-intro-media {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--eza-dark);
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.5);
+}
+.eza-intro-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+/* ---------- Showcase ---------- */
+.eza-showcase {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1rem;
+  height: clamp(280px, 32vw, 420px);
+}
+.eza-shot {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--eza-dark);
+}
+.eza-shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.eza-shot:hover img {
+  transform: scale(1.05);
+}
+.eza-shot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(5, 10, 20, 0.85));
+}
+.eza-shot figcaption {
+  position: absolute;
+  inset-inline: 1.25rem;
+  bottom: 1.1rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-weight: 700;
+  color: #fff;
+}
+.eza-shot-num {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+/* ---------- Flow ---------- */
+.eza-flow {
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
+.eza-flow-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.eza-flow-sub {
+  margin: 0.5rem 0 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+.eza-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex: none;
+}
+.eza-nav button {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.eza-nav button:hover,
+.eza-nav button:focus-visible {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #fff;
+  outline: none;
+}
+.eza-nav-prev {
+  transform: scaleX(-1);
+}
+[dir='rtl'] .eza-nav-prev {
+  transform: none;
+}
+[dir='rtl'] .eza-nav-next {
+  transform: scaleX(-1);
+}
+
+.eza-track {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.75rem;
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+.eza-step {
+  flex: 0 0 min(280px, 78%);
+  scroll-snap-align: start;
+  padding-block-start: 1rem;
+  border-block-start: 2px solid var(--color-accent);
+}
+.eza-step-n {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+.eza-step h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+}
+.eza-step p {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ---------- Principles ---------- */
+.eza-principles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+.eza-principle {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.25s, transform 0.25s;
+}
+.eza-principle:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+}
+.eza-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  color: var(--color-accent);
+}
+.eza-principle h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.eza-principle p {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: 1.8;
+  color: var(--color-ink-muted);
+}
+
+/* ---------- CTA ---------- */
+.eza-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: clamp(2.25rem, 5vw, 4rem) 1.5rem;
+}
+.eza-zones {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.eza-zones li {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.07);
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .eza-principles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 800px) {
+  .eza {
+    gap: 3rem;
+  }
+  .eza-intro {
+    grid-template-columns: 1fr;
+  }
+  .eza-showcase {
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+  }
+  .eza-shot {
+    height: 220px;
+  }
+  .eza-shot--wide {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 560px) {
+  .eza-principles {
+    grid-template-columns: 1fr;
+  }
+  .eza-showcase {
+    grid-template-columns: 1fr;
+  }
+  .eza-flow-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .eza-actions .ez-btn-lg,
+  .eza-cta .ez-btn-lg {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eza-shot img,
+  .eza-principle {
+    transition: none;
+  }
+}

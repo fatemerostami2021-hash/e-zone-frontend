@@ -33,3 +33,17 @@
   --color-primary-ink: #0B1220;
   --color-accent: #14B8A6;
 }
+
+/* ========================= */
+/* Page gutter               */
+/* ========================= */
+/* حدود ۱.۵ سانت هر طرف روی دسکتاپ — تقریباً تمام‌عرض */
+:root {
+  --page-gutter: clamp(1rem, 1.5vw, 1.5rem);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-gutter: 1rem;
+  }
+}
