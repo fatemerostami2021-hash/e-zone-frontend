@@ -60,7 +60,7 @@ function HomePage() {
   const homeRef = useRef(null);
 
   useEffect(() => {
-    fetch('/api/home')
+   fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/home`)
       .then((r) => {
         if (!r.ok) throw new Error('bad response');
         return r.json();
