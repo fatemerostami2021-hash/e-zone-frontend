@@ -1,3 +1,8 @@
+/* ================================
+   E-ZONE · About Page
+   Full-bleed wavy hero with spotlight reveal
+   ================================ */
+
 .eza,
 .eza *,
 .eza *::before,
@@ -5,365 +10,465 @@
   box-sizing: border-box;
 }
 
-.eza {
-  --eza-dark: #0b1220;
-  --eza-dark-2: #101c33;
-  display: flex;
-  flex-direction: column;
-  gap: 4.5rem;
-  padding-inline: var(--page-gutter);
-  padding-block: 1rem 4rem;
+/* Full-bleed needs the page itself not to scroll sideways
+   (100vw includes the scrollbar width). `clip` does not create
+   a scroll container, so sticky headers keep working. */
+body:has(.eza) {
+  overflow-x: clip;
 }
 
-/* ---------- Dark bands (dark in both themes so white text is always readable) ---------- */
-.eza-band {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  color: #fff;
-  background:
-    radial-gradient(ellipse 60% 90% at 85% 0%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 70%),
-    radial-gradient(ellipse 50% 70% at 5% 100%, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 70%),
-    linear-gradient(160deg, var(--eza-dark), var(--eza-dark-2));
-  border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+.eza {
+  --eza-radius: 20px;
+  --eza-radius-lg: 28px;
+  --eza-max: 1180px;
+  --eza-gutter: clamp(1rem, 4vw, 2rem);
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 6rem);
+  padding-block: 0 clamp(3rem, 6vw, 5rem);
+  padding-inline: 0;
+  color: var(--color-ink);
+  /* IMPORTANT: no overflow here, otherwise the hero is clipped
+     to this box and a gap appears on the left and right. */
 }
-.eza-band .ez-btn-lg--outline {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.06);
-}
-.eza-band .ez-btn-lg--outline:hover {
-  color: #fff;
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.16);
-}
-.eza a.ez-btn-lg {
-  text-decoration: none;
-}
+
 [dir='rtl'] .eza-arrow {
   transform: scaleX(-1);
 }
 
-/* ---------- Hero ---------- */
-.eza-hero {
-  min-height: clamp(280px, 40vh, 420px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 1.25rem;
-  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
-}
-.eza-hero-title {
-  margin: 0;
-  font-size: clamp(2.2rem, 5vw, 3.75rem);
-  font-weight: 900;
-  line-height: 1.15;
-  color: #fff;
-}
-.eza-hero-sub {
-  margin: 0;
-  max-width: 44rem;
-  font-size: 1.1rem;
-  line-height: 1.85;
-  color: rgba(255, 255, 255, 0.82);
-}
-.eza-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+/* Non-hero blocks get the side gutter */
+.eza-section,
+.eza-cta {
+  padding-inline: var(--eza-gutter);
 }
 
-/* ---------- Headings ---------- */
-.eza-h2 {
-  margin: 0 0 1rem;
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+/* ---------- Shared typography ---------- */
+.eza-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  line-height: 1.3;
-  color: var(--color-ink);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-accent) 90%, white);
 }
-.eza-h2--light {
-  color: #fff;
-  margin: 0;
+.eza-eyebrow--muted { color: var(--color-accent); }
+.eza-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 25%, transparent);
 }
 
-/* ---------- Intro ---------- */
-.eza-intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(1.5rem, 5vw, 4rem);
-  align-items: center;
+.eza-h2 {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
-.eza-intro-copy p {
-  margin: 0 0 1rem;
-  max-width: 34rem;
-  line-height: 1.9;
+
+.eza-section-lead {
+  margin: 0.9rem 0 0;
+  max-width: 46rem;
   color: var(--color-ink-muted);
-}
-.eza-intro-media {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  background: var(--eza-dark);
-  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.5);
-}
-.eza-intro-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 260px;
-  max-height: 420px;
-  object-fit: cover;
+  font-size: 1rem;
+  line-height: 1.85;
 }
 
-/* ---------- Showcase ---------- */
-.eza-showcase {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 1rem;
-  height: clamp(280px, 32vw, 420px);
-}
-.eza-shot {
+/* ================================
+   HERO: full-bleed + wavy bottom edge
+   ================================ */
+.eza-hero {
+  /* spotlight (position is written by JS) */
+  --mx: 70%;
+  --my: 30%;
+  --eza-r: clamp(150px, 18vw, 260px);
+
+  /* wave */
+  --wave-h: clamp(40px, 5vw, 72px);
+  --wave-w: calc(var(--wave-h) * 26.6667);
+  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1600V30C1500 60 1300 60 1200 30S900 0 800 30S500 60 400 30S100 0 0 30Z'/%3E%3C/svg%3E");
+
   position: relative;
-  margin: 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--eza-dark);
+  isolation: isolate;
+
+  /* true full-bleed, independent of parent width/padding */
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
+
+  min-height: clamp(540px, 74vh, 740px);
+  display: flex;
+  align-items: center;
+  padding:
+    clamp(2.5rem, 6vw, 5rem)
+    clamp(1.5rem, 6vw, 5rem)
+    calc(clamp(2.5rem, 6vw, 5rem) + var(--wave-h));
+  background: #0b1220;
+
+  /* solid body + repeating wave at the bottom */
+  -webkit-mask-image: linear-gradient(#000, #000), var(--wave);
+  mask-image: linear-gradient(#000, #000), var(--wave);
+  -webkit-mask-size: 100% calc(100% - var(--wave-h) + 1px), var(--wave-w) var(--wave-h);
+  mask-size: 100% calc(100% - var(--wave-h) + 1px), var(--wave-w) var(--wave-h);
+  -webkit-mask-position: left top, left bottom;
+  mask-position: left top, left bottom;
+  -webkit-mask-repeat: no-repeat, repeat-x;
+  mask-repeat: no-repeat, repeat-x;
 }
-.eza-shot img {
+
+/* ---------- Image layers ---------- */
+.eza-hero-media {
   position: absolute;
   inset: 0;
+  z-index: 0;
+}
+
+.eza-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.eza-layer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  object-position: center 40%;
+  animation: eza-hero-zoom 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.eza-shot:hover img {
-  transform: scale(1.05);
+
+.eza-layer--base img {
+  filter: grayscale(0.85) brightness(0.42) contrast(1.1);
 }
-.eza-shot::after {
+
+.eza-layer--reveal {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(
+    circle var(--eza-r) at var(--mx) var(--my),
+    #000 0%, rgba(0, 0, 0, 0.65) 40%, transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle var(--eza-r) at var(--mx) var(--my),
+    #000 0%, rgba(0, 0, 0, 0.65) 40%, transparent 100%
+  );
+}
+.eza-layer--reveal img {
+  filter: saturate(1.2) brightness(1.12) contrast(1.05);
+}
+.eza-hero.is-active .eza-layer--reveal { opacity: 1; }
+
+@keyframes eza-hero-zoom {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1); }
+}
+
+/* ---------- Scrim ---------- */
+.eza-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(5, 10, 20, 0.85));
-}
-.eza-shot figcaption {
-  position: absolute;
-  inset-inline: 1.25rem;
-  bottom: 1.1rem;
   z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(6, 12, 24, 0) 0%, rgba(6, 12, 24, 0.35) 60%, rgba(6, 12, 24, 0.85) 100%),
+    linear-gradient(90deg, rgba(6, 12, 24, 0.55) 0%, rgba(6, 12, 24, 0) 55%);
+  pointer-events: none;
+}
+
+/* ---------- Content ---------- */
+.eza-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--eza-max);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  font-weight: 700;
-  color: #fff;
-}
-.eza-shot-num {
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  font-weight: 900;
-  line-height: 1;
-  color: var(--color-accent);
-}
-
-/* ---------- Flow ---------- */
-.eza-flow {
-  padding: clamp(1.75rem, 4vw, 3rem);
-}
-.eza-flow-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
   gap: 1rem;
-  margin-bottom: 1.75rem;
-}
-.eza-flow-sub {
-  margin: 0.5rem 0 0;
-  color: rgba(255, 255, 255, 0.7);
-}
-.eza-nav {
-  display: flex;
-  gap: 0.5rem;
-  flex: none;
-}
-.eza-nav button {
-  width: 2.75rem;
-  height: 2.75rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: transparent;
   color: #fff;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
 }
-.eza-nav button:hover,
-.eza-nav button:focus-visible {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #fff;
-  outline: none;
-}
-.eza-nav-prev {
-  transform: scaleX(-1);
-}
-[dir='rtl'] .eza-nav-prev {
-  transform: none;
-}
-[dir='rtl'] .eza-nav-next {
-  transform: scaleX(-1);
-}
-
-.eza-track {
-  list-style: none;
+/* ================================
+   HERO TITLE — bold, teal, responsive
+   ================================ */
+.eza-hero-title {
   margin: 0;
-  padding: 0 0 0.75rem;
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-}
-.eza-step {
-  flex: 0 0 min(280px, 78%);
-  scroll-snap-align: start;
-  padding-block-start: 1rem;
-  border-block-start: 2px solid var(--color-accent);
-}
-.eza-step-n {
-  display: block;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--color-accent);
-}
-.eza-step h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #fff;
-}
-.eza-step p {
-  margin: 0;
-  font-size: var(--text-small);
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.75);
+  max-width: 44rem;
+
+  /* اندازهٔ ریسپانسیو با فاصلهٔ بهتر بین بریک‌پوینت‌ها */
+  font-size: clamp(2.25rem, 5.4vw, 4rem);
+
+  /* بولدتر */
+  font-weight: 1000;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+
+  /* رنگ سبزآبی (teal/cyan) با گرادیان ملایم */
+  background: linear-gradient(
+    135deg,
+    #2dd4bf 0%,
+    #22d3ee 45%,
+    #38bdf8 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  /* درخشش ملایم سبزآبی دور متن */
+  filter: drop-shadow(0 4px 28px rgba(34, 211, 238, 0.35));
+
+  /* خوانایی روی تصویر تیره */
+  text-shadow: none;
 }
 
-/* ---------- Principles ---------- */
-.eza-principles {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+/* حالت روشن (light theme) — همان teal ولی کمی تیره‌تر */
+:root[data-theme='light'] .eza-hero-title,
+.light .eza-hero-title {
+  background: linear-gradient(
+    135deg,
+    #0d9488 0%,
+    #0891b2 45%,
+    #0284c7 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 18px rgba(8, 145, 178, 0.25));
 }
-.eza-principle {
-  padding: 1.5rem;
-  border-radius: var(--radius-md);
+
+/* در RTL کمی letter-spacing را نرم‌تر کن (فارسی به فشردگی نیاز ندارد) */
+[dir='rtl'] .eza-hero-title {
+  letter-spacing: -0.015em;
+}
+
+/* ---------- ریسپانسیو ---------- */
+@media (max-width: 1000px) {
+  .eza-hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.025em;
+  }
+}
+
+@media (max-width: 720px) {
+  .eza-hero-title {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    filter: drop-shadow(0 3px 18px rgba(34, 211, 238, 0.3));
+  }
+}
+
+@media (max-width: 480px) {
+  .eza-hero-title {
+    font-size: 1.65rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* کاهش حرکت: درخشش ثابت بماند */
+@media (prefers-reduced-motion: reduce) {
+  .eza-hero-title {
+    filter: none;
+  }
+}
+.eza-hero-sub {
+  margin: 0;
+  max-width: 40rem;
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.eza-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.ez-btn-lg--ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+.ez-btn-lg--ghost:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+/* ================================
+   SECTIONS
+   ================================ */
+.eza-section {
+  width: 100%;
+  max-width: var(--eza-max);
+  margin-inline: auto;
+}
+
+.eza-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+/* ================================
+   GRID + CARDS
+   ================================ */
+.eza-grid { display: grid; gap: 1.1rem; }
+.eza-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.eza-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.eza-card {
+  position: relative;
+  padding: 1.6rem 1.5rem 1.7rem;
+  border-radius: var(--eza-radius);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  transition: border-color 0.25s, transform 0.25s;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
-.eza-principle:hover {
-  border-color: var(--color-accent);
-  transform: translateY(-3px);
+.eza-card::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(180deg, var(--color-accent), var(--color-primary));
+  transition: height 0.35s ease;
 }
-.eza-icon {
+.eza-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  box-shadow:
+    0 18px 40px -22px rgba(0, 0, 0, 0.35),
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+.eza-card:hover::after { height: 100%; }
+
+.eza-card--soft {
+  background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.eza-card-icon {
   display: grid;
   place-items: center;
   width: 2.75rem;
   height: 2.75rem;
   margin-bottom: 1rem;
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  border-radius: 12px;
   color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);
 }
-.eza-principle h3 {
+
+.eza-card-title {
   margin: 0 0 0.5rem;
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--color-ink);
+  letter-spacing: -0.005em;
 }
-.eza-principle p {
+.eza-card-desc {
   margin: 0;
-  font-size: var(--text-small);
+  font-size: 0.92rem;
   line-height: 1.8;
   color: var(--color-ink-muted);
 }
 
-/* ---------- CTA ---------- */
+/* ================================
+   CTA
+   ================================ */
 .eza-cta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: var(--eza-max);
+  margin-inline: auto;
+  border-radius: var(--eza-radius-lg);
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem);
   text-align: center;
-  gap: 1.5rem;
-  padding: clamp(2.25rem, 5vw, 4rem) 1.5rem;
-}
-.eza-zones {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.6rem;
-}
-.eza-zones li {
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.07);
-  font-weight: 600;
+  overflow: hidden;
   color: #fff;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 0%, color-mix(in srgb, var(--color-accent) 35%, transparent), transparent 60%),
+    linear-gradient(160deg, #0b1220, #101c33);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+.eza-cta-glow {
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 60%;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--color-primary) 30%, transparent), transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+}
+.eza-cta-title {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto 0.75rem;
+  max-width: 42rem;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+.eza-cta-sub {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto 1.5rem;
+  max-width: 36rem;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.78);
+}
+.eza-cta .ez-btn-lg { position: relative; z-index: 1; }
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 1000px) {
+  .eza-grid--3,
+  .eza-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 1000px) {
-  .eza-principles {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (max-width: 720px) {
+  .eza-hero {
+    --wave-h: 36px;
+    --wave-w: calc(var(--wave-h) * 12); /* shorter period on phones */
+    min-height: 80vh;
+    padding-inline: 1.25rem;
   }
-}
-@media (max-width: 800px) {
-  .eza {
-    gap: 3rem;
-  }
-  .eza-intro {
-    grid-template-columns: 1fr;
-  }
-  .eza-showcase {
-    grid-template-columns: 1fr 1fr;
-    height: auto;
-  }
-  .eza-shot {
-    height: 220px;
-  }
-  .eza-shot--wide {
-    grid-column: 1 / -1;
-  }
-}
-@media (max-width: 560px) {
-  .eza-principles {
-    grid-template-columns: 1fr;
-  }
-  .eza-showcase {
-    grid-template-columns: 1fr;
-  }
-  .eza-flow-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .eza-actions .ez-btn-lg,
-  .eza-cta .ez-btn-lg {
-    width: 100%;
+  .eza-layer img { object-position: center 35%; }
+  .eza-hero-actions .ez-btn-lg {
+    flex: 1 1 100%;
     justify-content: center;
   }
 }
+
+@media (max-width: 560px) {
+  .eza-grid--3,
+  .eza-grid--4 { grid-template-columns: 1fr; }
+  .eza-card { padding: 1.4rem 1.2rem; }
+}
+
+/* ================================
+   REDUCED MOTION
+   ================================ */
 @media (prefers-reduced-motion: reduce) {
-  .eza-shot img,
-  .eza-principle {
-    transition: none;
-  }
+  .eza-layer img { animation: none; }
+  .eza-layer--reveal,
+  .eza-card,
+  .eza-card::after,
+  .ez-btn-lg--ghost { transition: none; }
 }

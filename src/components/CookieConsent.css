@@ -1,0 +1,175 @@
+/* =================================
+   E-ZONE · Cookie Consent Modal
+   ================================= */
+
+.ez-cookie-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;                 /* بالاتر از هر چیزی از جمله فوتر */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: ez-cookie-fade 0.25s ease-out;
+}
+
+@keyframes ez-cookie-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ez-cookie-panel {
+  width: 100%;
+  max-width: 40rem;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  padding: 1.5rem 1.5rem 1.25rem;
+  background: var(--color-surface, #fff);
+  color: var(--color-ink, #0f2230);
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.55),
+    0 0 0 1px color-mix(in srgb, var(--color-border, #000) 25%, transparent);
+  animation: ez-cookie-pop 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes ez-cookie-pop {
+  from { transform: translateY(12px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.ez-cookie-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-weight: 800;
+  color: var(--color-primary, #2563eb);
+}
+
+.ez-cookie-body {
+  margin: 0;
+  max-height: 45vh;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--color-ink-muted, #5b7080);
+  padding-inline-end: 0.25rem;
+}
+
+/* دسته‌بندی‌ها */
+.ez-cookie-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 45vh;
+  overflow-y: auto;
+  padding-inline-end: 0.25rem;
+}
+
+.ez-cookie-cat {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface, #fff) 96%, transparent);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.ez-cookie-cat:hover {
+  border-color: color-mix(in srgb, var(--color-primary, #2563eb) 45%, transparent);
+  background: color-mix(in srgb, var(--color-primary, #2563eb) 5%, transparent);
+}
+
+.ez-cookie-cat-text { display: flex; flex-direction: column; gap: 0.15rem; }
+.ez-cookie-cat-name { font-weight: 700; font-size: 0.95rem; }
+.ez-cookie-cat-desc { font-size: 0.78rem; line-height: 1.7; color: var(--color-ink-muted, #5b7080); }
+
+.ez-cookie-check {
+  margin-top: 0.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-primary, #2563eb);
+  cursor: pointer;
+  flex: none;
+}
+.ez-cookie-check:disabled { cursor: not-allowed; opacity: 0.6; }
+
+/* دکمه‌ها */
+.ez-cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.ez-cookie-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.15rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, filter 0.2s ease;
+}
+.ez-cookie-btn:active { transform: scale(0.97); }
+
+.ez-cookie-btn--primary {
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--color-primary, #2563eb) 70%, transparent);
+}
+.ez-cookie-btn--primary:hover { filter: brightness(1.08); }
+
+.ez-cookie-btn--outline {
+  background: transparent;
+  border-color: var(--color-primary, #2563eb);
+  color: var(--color-primary, #2563eb);
+}
+.ez-cookie-btn--outline:hover {
+  background: color-mix(in srgb, var(--color-primary, #2563eb) 10%, transparent);
+}
+
+.ez-cookie-btn--ghost {
+  background: transparent;
+  border-color: var(--color-border, #cbd5e1);
+  color: var(--color-ink-muted, #5b7080);
+}
+.ez-cookie-btn--ghost:hover {
+  background: color-mix(in srgb, var(--color-ink-muted, #5b7080) 10%, transparent);
+  color: var(--color-ink, #0f2230);
+}
+
+/* موبایل */
+@media (max-width: 560px) {
+  .ez-cookie-panel {
+    padding: 1.25rem 1rem 1rem;
+    border-radius: 14px;
+  }
+  .ez-cookie-actions {
+    flex-direction: column-reverse;
+  }
+  .ez-cookie-btn {
+    width: 100%;
+  }
+}
+
+/* کاهش حرکت */
+@media (prefers-reduced-motion: reduce) {
+  .ez-cookie-overlay,
+  .ez-cookie-panel {
+    animation: none;
+  }
+}

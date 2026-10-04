@@ -1,0 +1,377 @@
+/* ================================
+   E-ZONE · Floating contact button
+   ================================ */
+
+.ezf {
+  --f-panel: #0e1d29;
+  --f-fg: #e8f1f5;
+  --f-muted: #9fb3c0;
+  --f-border: rgba(255, 255, 255, 0.1);
+  --f-hover: rgba(255, 255, 255, 0.07);
+  --f-accent: #f5a524;
+  --f-accent-hover: #ffb73d;
+  --f-accent-ink: #1a1203;
+
+  position: fixed;
+  /* Above Header (1000) and Search (1200), below CookieConsent (9999) */
+  z-index: 9998;
+  inset-inline-end: clamp(14px, 2vw, 24px);
+  bottom: calc(clamp(14px, 2vw, 24px) + env(safe-area-inset-bottom, 0px));
+  color: var(--f-fg);
+}
+
+:root[data-theme='light'] .ezf,
+.light .ezf {
+  --f-panel: #ffffff;
+  --f-fg: #0f2230;
+  --f-muted: #5b7080;
+  --f-border: rgba(15, 34, 48, 0.12);
+  --f-hover: rgba(15, 34, 48, 0.06);
+  --f-accent: #e8a317;
+  --f-accent-hover: #d99608;
+}
+
+.ezf *,
+.ezf *::before,
+.ezf *::after {
+  box-sizing: border-box;
+}
+
+.ezf :focus-visible {
+  outline: 2px solid var(--f-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Floating button ---------- */
+.ezf-fab {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--f-accent);
+  color: var(--f-accent-ink);
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 12px 28px -8px rgba(0, 0, 0, 0.55);
+  transition: background 0.2s, transform 0.2s;
+}
+.ezf-fab:hover {
+  background: var(--f-accent-hover);
+  transform: translateY(-2px);
+}
+
+/* soft pulse ring while closed */
+.ezf:not(.is-open) .ezf-fab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--f-accent);
+  animation: ezf-pulse 2.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes ezf-pulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ---------- Panel ---------- */
+.ezf-panel {
+  position: absolute;
+  bottom: 72px;
+  inset-inline-end: 0;
+  width: min(360px, calc(100vw - 28px));
+  max-height: min(72vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--f-panel);
+  border: 1px solid var(--f-border);
+  border-radius: 18px;
+  box-shadow: 0 28px 60px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transform-origin: bottom;
+  animation: ezf-pop 0.2s ease-out;
+}
+[dir='rtl'] .ezf-panel {
+  transform-origin: bottom left;
+}
+@keyframes ezf-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ezf-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--f-border);
+}
+.ezf-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ezf-head-text strong {
+  font-size: 15px;
+}
+.ezf-head-text small {
+  font-size: 12.5px;
+  color: var(--f-muted);
+}
+.ezf-back {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--f-border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--f-fg);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ezf-back:hover {
+  background: var(--f-hover);
+}
+[dir='rtl'] .ezf-flip {
+  transform: scaleX(-1);
+}
+
+/* ---------- Menu list ---------- */
+.ezf-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+}
+.ezf-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--f-fg);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ezf-item:hover {
+  background: var(--f-hover);
+}
+.ezf-ico {
+  flex: 0 0 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+}
+.ezf-ico--chat      { background: #e8a317; color: #1a1203; }
+.ezf-ico--faq       { background: #3b82f6; }
+.ezf-ico--telegram  { background: #229ed9; }
+.ezf-ico--instagram { background: linear-gradient(135deg, #f58529, #dd2a7b 55%, #8134af); }
+.ezf-ico--linkedin  { background: #0a66c2; }
+.ezf-ico--facebook  { background: #1877f2; }
+
+/* ---------- Body (FAQ / chat) ---------- */
+.ezf-body {
+  flex: 1;
+  min-height: 220px;
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* FAQ accordion */
+.ezf-acc {
+  border: 1px solid var(--f-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ezf-acc.is-open {
+  border-color: color-mix(in srgb, var(--f-accent) 45%, var(--f-border));
+}
+.ezf-acc-q {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 0;
+  background: none;
+  color: var(--f-fg);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-align: start;
+  cursor: pointer;
+}
+.ezf-acc-q svg {
+  flex-shrink: 0;
+  color: var(--f-muted);
+  transition: transform 0.2s;
+}
+.ezf-acc.is-open .ezf-acc-q svg {
+  transform: rotate(180deg);
+}
+.ezf-acc-a {
+  margin: 0;
+  padding: 0 14px 14px;
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--f-muted);
+}
+.ezf-link {
+  margin-top: 4px;
+  padding: 8px 4px;
+  color: var(--f-accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.ezf-link:hover {
+  text-decoration: underline;
+}
+
+/* Chat */
+.ezf-msg {
+  max-width: 86%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.ezf-msg--bot {
+  align-self: flex-start;
+  background: var(--f-hover);
+  border-end-start-radius: 4px;
+}
+.ezf-msg--user {
+  align-self: flex-end;
+  background: var(--f-accent);
+  color: var(--f-accent-ink);
+  font-weight: 600;
+  border-end-end-radius: 4px;
+}
+
+.ezf-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+.ezf-chip {
+  padding: 8px 12px;
+  border: 1px solid var(--f-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--f-fg);
+  font: inherit;
+  font-size: 12.5px;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.ezf-chip:hover {
+  background: var(--f-hover);
+  border-color: color-mix(in srgb, var(--f-accent) 55%, var(--f-border));
+}
+
+.ezf-typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.ezf-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--f-muted);
+  animation: ezf-dot 1s infinite ease-in-out;
+}
+.ezf-typing span:nth-child(2) { animation-delay: 0.15s; }
+.ezf-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes ezf-dot {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40%           { opacity: 1;   transform: translateY(-3px); }
+}
+
+.ezf-input {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--f-border);
+}
+.ezf-input input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding-inline: 12px;
+  border: 1px solid var(--f-border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--f-fg);
+  font: inherit;
+  font-size: 14px;
+}
+.ezf-input input::placeholder {
+  color: var(--f-muted);
+}
+.ezf-input input:focus {
+  outline: none;
+  border-color: var(--f-accent);
+}
+.ezf-input button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: var(--f-accent);
+  color: var(--f-accent-ink);
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+.ezf-input button:hover:not(:disabled) {
+  background: var(--f-accent-hover);
+}
+.ezf-input button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .ezf-fab { width: 54px; height: 54px; }
+  .ezf-panel { bottom: 68px; max-height: 70vh; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ezf-panel,
+  .ezf:not(.is-open) .ezf-fab::after,
+  .ezf-typing span {
+    animation: none;
+  }
+  .ezf-fab,
+  .ezf-acc-q svg {
+    transition: none;
+  }
+}
