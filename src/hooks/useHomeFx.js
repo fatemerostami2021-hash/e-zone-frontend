@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -60,6 +60,9 @@ function useFullBleedHero(rootRef, ready, deps) {
  */
 export default function useHomeFx(rootRef, ready, deps) {
   useFullBleedHero(rootRef, ready, deps);
+  // the hero intro plays once per mount, not every time late data re-runs the effect
+  const introPlayed = useRef(false);
+  useEffect(() => () => { introPlayed.current = false; }, []);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -109,13 +112,16 @@ export default function useHomeFx(rootRef, ready, deps) {
 
         // ---- hero intro (explicit end values, so a re-run can never animate 0 -> 0) ----
         const END = { opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all' };
-        const intro = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
-        intro
-          .fromTo(q('.ezh-pill'), { y: 24, opacity: 0 }, END, 0.2)
-          .fromTo(q('.ezh-hero-title'), { y: 40, opacity: 0 }, END, 0.3)
-          .fromTo(q('.ezh-hero-sub'), { y: 28, opacity: 0 }, END, 0.5)
-          .fromTo(q('.ezh-hero-actions > *'), { y: 24, opacity: 0 }, { ...END, stagger: 0.1 }, 0.65)
-          .fromTo(q('.ezh-mockup'), { x: 70 * dir * k, y: 30, opacity: 0 }, { ...END, duration: 1.2 }, 0.55);
+        if (!introPlayed.current) {
+          introPlayed.current = true;
+          const intro = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
+          intro
+            .fromTo(q('.ezh-pill'), { y: 24, opacity: 0 }, END, 0.2)
+            .fromTo(q('.ezh-hero-title'), { y: 40, opacity: 0 }, END, 0.3)
+            .fromTo(q('.ezh-hero-sub'), { y: 28, opacity: 0 }, END, 0.5)
+            .fromTo(q('.ezh-hero-actions > *'), { y: 24, opacity: 0 }, { ...END, stagger: 0.1 }, 0.65)
+            .fromTo(q('.ezh-mockup'), { x: 70 * dir * k, y: 30, opacity: 0 }, { ...END, duration: 1.2 }, 0.55);
+        }
 
         // ---- hero scroll parallax (desktop) ----
         if (full) {
@@ -126,7 +132,25 @@ export default function useHomeFx(rootRef, ready, deps) {
           gsap.to(q('.ezh-vhero-body .ezh-mockup'), { yPercent: -26, ease: 'none', scrollTrigger: st });
         }
 
-        // ---- single-element reveals, varied directions ----
+        // ---- reveals + counters ----
+        // IntersectionObserver instead of ScrollTrigger "once" triggers: lazy images and fonts
+        // shift the layout after load, which made position-based triggers fire too early,
+        // so text had already finished animating before the visitor reached it.
+        const plays = new Map();
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              const tw = plays.get(e.target);
+              if (tw) tw.play();
+              io.unobserve(e.target);
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        cleanups.push(() => io.disconnect());
+        const watch = (el, tween) => { plays.set(el, tween); io.observe(el); };
+
         q('[data-fx]').forEach((el) => {
           let type = el.dataset.fx;
           if (!full && (type === 'left' || type === 'right')) type = 'up';
@@ -136,22 +160,17 @@ export default function useHomeFx(rootRef, ready, deps) {
           if (type === 'right') from.x = 90 * dir;
           if (type === 'scale') { from.scale = 0.92; from.y = 30 * k; }
           if (type === 'clip') from.y = 30 * k;
-          gsap.fromTo(el, from, {
-            ...END, duration: 1, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-          });
+          watch(el, gsap.fromTo(el, from, { ...END, duration: 1, ease: 'power3.out', paused: true }));
         });
 
-        // ---- staggered groups ----
         q('[data-stagger]').forEach((el) => {
-          const kids = Array.from(el.children);
-          gsap.fromTo(kids, { y: 50 * k, opacity: 0, transition: 'none' }, {
-            ...END, duration: 0.9, ease: 'power3.out', stagger: 0.12,
-            scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-          });
+          watch(el, gsap.fromTo(
+            Array.from(el.children),
+            { y: 50 * k, opacity: 0, transition: 'none' },
+            { ...END, duration: 0.9, ease: 'power3.out', stagger: 0.12, paused: true },
+          ));
         });
 
-        // ---- counters ----
         q('.ezh-count').forEach((el) => {
           const original = el.textContent;
           const m = COUNT_RE.exec(original.trim());
@@ -167,13 +186,13 @@ export default function useHomeFx(rootRef, ready, deps) {
           };
           const obj = { v: 0 };
           el.textContent = m[1] + fmt(0) + m[3];
-          gsap.to(obj, {
+          watch(el, gsap.to(obj, {
             v: target,
             duration: 1.8,
             ease: 'power2.out',
+            paused: true,
             onUpdate: () => { el.textContent = m[1] + fmt(obj.v) + m[3]; },
-            scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-          });
+          }));
           cleanups.push(() => { el.textContent = original; });
         });
 

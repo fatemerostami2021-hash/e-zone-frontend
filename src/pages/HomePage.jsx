@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import useHomeFx from '../hooks/useHomeFx';
+import HeroVideo from '../components/HeroVideo';
+import ModuleVisual from '../components/ModuleVisual';
 import './HomePage.css';
 import './HomePage.fx.css';
 
@@ -62,39 +64,60 @@ function Train({ words }) {
   );
 }
 
+const CACHE_KEY = 'ezone:home:v1';
+
+function readCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function Skeletons({ n }) {
+  return Array.from({ length: n }, (_, i) => <div key={i} className="ezh-skel" aria-hidden="true" />);
+}
+
 function HomePage() {
   const { t, i18n } = useTranslation();
   const isFa = i18n.language === 'fa';
   const pick = (item, key) => (isFa ? item[`${key}_fa`] : item[`${key}_en`]);
 
-  const [stats, setStats] = useState([]);
-  const [features, setFeatures] = useState([]);
-  const [roadmap, setRoadmap] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [cached] = useState(readCache);
+  const [stats, setStats] = useState(cached?.stats || []);
+  const [features, setFeatures] = useState(cached?.features || []);
+  const [roadmap, setRoadmap] = useState(cached?.roadmap || []);
+  const [loading, setLoading] = useState(!cached);
   const homeRef = useRef(null);
 
+  // The page renders immediately; CMS data fills in when it arrives (cached copy first)
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/home`)
+    const ctrl = new AbortController();
+    fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/home`, { signal: ctrl.signal })
       .then((r) => {
         if (!r.ok) throw new Error('bad response');
         return r.json();
       })
       .then((data) => {
-        setStats(data.stats || []);
-        setFeatures(data.features || []);
-        setRoadmap(data.roadmap || []);
+        const next = {
+          stats: data.stats || [],
+          features: data.features || [],
+          roadmap: data.roadmap || [],
+        };
+        setStats(next.stats);
+        setFeatures(next.features);
+        setRoadmap(next.roadmap);
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify(next)); } catch { /* storage full or blocked */ }
       })
-      .catch(() => setError(true))
+      .catch(() => { /* keep cached data; empty sections stay hidden */ })
       .finally(() => setLoading(false));
+    return () => ctrl.abort();
   }, []);
 
-  useHomeFx(homeRef, !loading && !error, [
+  useHomeFx(homeRef, true, [
     i18n.language, stats.length, features.length, roadmap.length,
   ]);
-
-  if (loading) return <div className="ez-home"><div className="ezh-loading">Loading…</div></div>;
-  if (error) return <div className="ez-home"><div className="ezh-loading">خطا در بارگذاری / Failed to load</div></div>;
 
   const bigWords = isFa ? BIGTEXT.fa : BIGTEXT.en;
 
@@ -105,9 +128,7 @@ function HomePage() {
       {/* Hero — video banner + text */}
       <section className="ezh-vhero" data-bleed onMouseMove={heroMove} onMouseLeave={heroLeave}>
         <div className="ezh-vhero-banner">
-          <video className="ezh-vhero-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
-            <source src="/video/hero-home.mp4" type="video/mp4" />
-          </video>
+          <HeroVideo className="ezh-vhero-video" />
           <div className="ezh-vhero-shade" aria-hidden="true" />
         </div>
 
@@ -190,12 +211,14 @@ function HomePage() {
       </section>
 
       {/* Stats */}
+      {(loading || stats.length > 0) && (
       <section className="ezh-section">
         <div className="ezh-head" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.stats.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.stats.title')}</h2>
         </div>
         <div className="ezh-stats-grid" data-bleed data-stagger>
+          {stats.length === 0 && <Skeletons n={4} />}
           {stats.map((s) => (
             <div key={s.id} className="ezh-stat-card">
               <Ph size="ezh-ph--xs" />
@@ -206,23 +229,29 @@ function HomePage() {
           ))}
         </div>
       </section>
+      )}
 
       {/* Features */}
+      {(loading || features.length > 0) && (
       <section className="ezh-section">
         <div className="ezh-head" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.features.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.features.title')}</h2>
         </div>
         <div className="ezh-features-grid" data-bleed data-stagger>
-          {features.map((f) => (
-            <div key={f.id} className="ezh-feature-card">
-              <Ph size="ezh-ph--lg" />
-              <h3>{pick(f, 'title')}</h3>
-              <p>{pick(f, 'description')}</p>
+          {features.length === 0 && <Skeletons n={6} />}
+          {features.map((f, i) => (
+            <div key={f.id} className="ezh-feature-card ezh-feature-card--art">
+              <ModuleVisual name={f.icon_name} index={i} />
+              <div className="ezh-feature-body">
+                <h3>{pick(f, 'title')}</h3>
+                <p>{pick(f, 'description')}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
+      )}
 
       {/* Steps */}
       <section className="ezh-section">
@@ -271,12 +300,14 @@ function HomePage() {
       </section>
 
       {/* Roadmap */}
+      {(loading || roadmap.length > 0) && (
       <section className="ezh-section">
         <div className="ezh-head" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.roadmap.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.roadmap.title')}</h2>
         </div>
         <div className="ezh-roadmap-grid" data-bleed data-stagger>
+          {roadmap.length === 0 && <Skeletons n={5} />}
           {roadmap.map((r) => (
             <div key={r.id} className={`ezh-roadmap-card ezh-status--${r.status}`}>
               <div className="ezh-roadmap-top">
@@ -295,6 +326,7 @@ function HomePage() {
           ))}
         </div>
       </section>
+      )}
 
       {/* CTA */}
       <section className="ezh-section ezh-cta" data-bleed>

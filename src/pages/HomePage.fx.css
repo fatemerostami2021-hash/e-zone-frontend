@@ -351,3 +351,106 @@ body:has(.ez-home) { overflow-x: clip; }
   .ez-home .ezh-steps-grid,
   .ez-home .ezh-roadmap-grid { grid-template-columns: 1fr; }
 }
+
+/* Placeholder cards while CMS data loads */
+.ezh-skel {
+  position: relative;
+  min-height: 11rem;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+.ezh-skel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-ink) 7%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: ezh-skel 1.4s ease-in-out infinite;
+}
+@keyframes ezh-skel { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .ezh-skel::after { animation: none; } }
+
+/* Module cards: compact illustrated tile flush to the card edges + text body */
+.ez-home .ezh-feature-card--art { padding: 0; display: flex; flex-direction: column; }
+.ezh-feature-body { padding: clamp(1.25rem, 2.5vw, 2rem); }
+.ezh-feature-card--art h3 { margin-top: 0; }
+.ezh-features-grid .ezh-skel { min-height: 14rem; }
+
+.ezh-art {
+  --tone: var(--color-accent);
+  --ang: 135deg;
+  position: relative;
+  height: clamp(120px, 11vw, 176px);
+  overflow: hidden;
+  color: var(--tone);
+  background: linear-gradient(
+    var(--ang),
+    color-mix(in srgb, var(--tone) 24%, var(--color-bg)),
+    color-mix(in srgb, var(--tone) 6%, var(--color-surface))
+  );
+  border-block-end: 1px solid var(--color-border);
+}
+/* three tones x six compositions */
+.ezh-art[data-v='0'] { --tone: var(--color-accent);  --ang: 135deg; }
+.ezh-art[data-v='1'] { --tone: var(--color-primary); --ang: 200deg; }
+.ezh-art[data-v='2'] { --tone: color-mix(in srgb, var(--color-accent) 50%, var(--color-primary)); --ang: 160deg; }
+.ezh-art[data-v='3'] { --tone: var(--color-primary); --ang: 315deg; }
+.ezh-art[data-v='4'] { --tone: var(--color-accent);  --ang: 225deg; }
+.ezh-art[data-v='5'] { --tone: color-mix(in srgb, var(--color-accent) 50%, var(--color-primary)); --ang: 90deg; }
+
+.ezh-art-bg {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  fill: none;
+  stroke: currentColor;
+  opacity: 0.38;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ezh-feature-card:hover .ezh-art-bg { transform: scale(1.06) translateX(-6px); }
+
+/* large faint copy of the icon, anchored to a corner */
+.ezh-art-ghost {
+  position: absolute;
+  height: 150%;
+  aspect-ratio: 1;
+  inset-block-end: -28%;
+  inset-inline-end: -4%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.14;
+}
+.ezh-art[data-v='1'] .ezh-art-ghost,
+.ezh-art[data-v='4'] .ezh-art-ghost { inset-inline-end: auto; inset-inline-start: -4%; }
+.ezh-art-ghost * { stroke-dasharray: none; }
+
+.ezh-art-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--tone) 24%, transparent), transparent 50%);
+}
+.ezh-art-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: 50%;
+  max-height: 84px;
+  aspect-ratio: 1;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--tone) 55%, transparent));
+}
+.ezh-art-icon * { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.ezh-feature-card:hover .ezh-art-icon * { animation: ezh-draw 1.1s ease; }
+@keyframes ezh-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .ezh-feature-card:hover .ezh-art-icon * { animation: none; }
+  .ezh-art-bg { transition: none; }
+}

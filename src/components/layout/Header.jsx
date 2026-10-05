@@ -152,7 +152,7 @@ function Header() {
         {/* ---------- Brand ---------- */}
         <Link to="/" className="ez-header-brand" onClick={closeAll}>
           <span className="ez-header-logo-wrap">
-            <img src="/logo.png" alt={t('appName')} className="ez-header-logo" />
+            <img src="/logo.webp" alt={t('appName')} className="ez-header-logo" />
           </span>
           <span className="ez-header-text">
             <span className="ez-header-name">{t('appName')}</span>

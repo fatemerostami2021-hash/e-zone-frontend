@@ -69,7 +69,7 @@ function Footer() {
         <div className="ez-footer-brand">
           <div className="ez-footer-logo-row">
             <span className="ez-footer-logo-wrap">
-              <img src="/logo.png" alt={t('appName')} />
+              <img src="/logo.webp" alt={t('appName')} />
             </span>
             <div>
               <strong>{t('appName')}</strong>
