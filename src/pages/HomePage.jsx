@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import useHomeFx from '../hooks/useHomeFx';
 import HeroVideo from '../components/HeroVideo';
 import ModuleVisual from '../components/ModuleVisual';
+import CtaLink from '../components/home/CtaLink';
+import { mergeHomeLinks, linkLabel } from '../config/homeLinks';
 import './HomePage.css';
 import './HomePage.fx.css';
 
@@ -89,6 +91,7 @@ function HomePage() {
   const [features, setFeatures] = useState(cached?.features || []);
   const [roadmap, setRoadmap] = useState(cached?.roadmap || []);
   const [loading, setLoading] = useState(!cached);
+  const [links, setLinks] = useState(() => mergeHomeLinks(cached?.links));
   const homeRef = useRef(null);
 
   // The page renders immediately; CMS data fills in when it arrives (cached copy first)
@@ -104,10 +107,12 @@ function HomePage() {
           stats: data.stats || [],
           features: data.features || [],
           roadmap: data.roadmap || [],
+          links: data.links || null,
         };
         setStats(next.stats);
         setFeatures(next.features);
         setRoadmap(next.roadmap);
+        setLinks(mergeHomeLinks(next.links));
         try { localStorage.setItem(CACHE_KEY, JSON.stringify(next)); } catch { /* storage full or blocked */ }
       })
       .catch(() => { /* keep cached data; empty sections stay hidden */ })
@@ -138,12 +143,12 @@ function HomePage() {
             <h1 className="ezh-hero-title">{t('homePage.hero.title')}</h1>
             <p className="ezh-hero-sub">{t('homePage.hero.subtitle')}</p>
             <div className="ezh-hero-actions">
-              <button className="ez-btn-lg ez-btn-lg--primary ez-btn-lg--arrow">
-                {t('homePage.hero.cta1')}
-              </button>
-              <button className="ez-btn-lg ez-btn-lg--outline">
-                {t('homePage.hero.cta2')}
-              </button>
+              <CtaLink to={links.heroPrimary.to} className="ez-btn-lg ez-btn-lg--primary ez-btn-lg--arrow">
+                {linkLabel(links.heroPrimary, isFa, t('homePage.hero.cta1'))}
+              </CtaLink>
+              <CtaLink to={links.heroSecondary.to} className="ez-btn-lg ez-btn-lg--outline">
+                {linkLabel(links.heroSecondary, isFa, t('homePage.hero.cta2'))}
+              </CtaLink>
             </div>
           </div>
 
@@ -334,8 +339,12 @@ function HomePage() {
           <h2 className="ezh-cta-title">{t('homePage.cta.title')}</h2>
           <p className="ezh-section-sub">{t('homePage.cta.subtitle')}</p>
           <div className="ezh-hero-actions">
-            <button className="ez-btn-lg ez-btn-lg--primary ez-btn-lg--arrow">{t('homePage.cta.primary')}</button>
-            <button className="ez-btn-lg ez-btn-lg--outline">{t('homePage.cta.secondary')}</button>
+            <CtaLink to={links.ctaPrimary.to} className="ez-btn-lg ez-btn-lg--primary ez-btn-lg--arrow">
+              {linkLabel(links.ctaPrimary, isFa, t('homePage.cta.primary'))}
+            </CtaLink>
+            <CtaLink to={links.ctaSecondary.to} className="ez-btn-lg ez-btn-lg--outline">
+              {linkLabel(links.ctaSecondary, isFa, t('homePage.cta.secondary'))}
+            </CtaLink>
           </div>
         </div>
       </section>

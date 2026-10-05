@@ -4,9 +4,9 @@
 // A value may also be a plain string: heroPrimary: '/login'
 export const DEFAULT_HOME_LINKS = {
   heroPrimary: { to: '/login' },
-  heroSecondary: { to: '/contact' },
+  heroSecondary: { to: 'https://t.me/fitness_mindset' },
   ctaPrimary: { to: '/login' },
-  ctaSecondary: { to: '/contact?topic=demo' },
+  ctaSecondary: { to: 'https://www.instagram.com/f.rostamii_web' },
 };
 
 const normalize = (v) => (typeof v === 'string' ? { to: v } : v || {});

@@ -454,3 +454,7 @@ body:has(.ez-home) { overflow-x: clip; }
   .ezh-feature-card:hover .ezh-art-icon * { animation: none; }
   .ezh-art-bg { transition: none; }
 }
+
+/* buttons are <a> now: keep the button look */
+.ez-home a.ez-btn-lg { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer; }
+.ez-home .ez-btn-lg.is-disabled { opacity: 0.5; pointer-events: none; }
