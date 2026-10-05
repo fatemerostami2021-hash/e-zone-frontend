@@ -1,11 +1,12 @@
 /* ================================
    E-ZONE · Header
    Frameless logo · single gold accent · neutral surface
+   Solid background — never fades on scroll
    ================================ */
 
 .ez-header {
   --ez-header-h: 76px;
-  --h-bg: rgba(9, 20, 30, 0.85);
+  --h-bg: #0a1825;              /* solid — no fade-through */
   --h-panel: #0e1d29;
   --h-fg: #e8f1f5;
   --h-muted: #9fb3c0;
@@ -25,14 +26,12 @@
   background: var(--h-bg);
   color: var(--h-fg);
   border-bottom: 1px solid var(--h-border);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
-  transition: box-shadow 0.25s ease, background 0.25s ease;
+  transition: box-shadow 0.25s ease;
 }
 
 :root[data-theme='light'] .ez-header,
 .light .ez-header {
-  --h-bg: rgba(255, 255, 255, 0.9);
+  --h-bg: #ffffff;
   --h-panel: #ffffff;
   --h-fg: #0f2230;
   --h-muted: #5b7080;
@@ -46,7 +45,7 @@
 }
 
 .ez-header.is-scrolled {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32);
 }
 
 /* gold accent line under the header */
@@ -108,6 +107,19 @@
   height: 100%;
   object-fit: contain;
   display: block;
+  animation: ez-logo-blink 1.8s ease-in-out infinite;
+}
+
+/* Continuous subtle gold pulse on the logo */
+@keyframes ez-logo-blink {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 3px rgba(245, 165, 36, 0.35));
+  }
+  50% {
+    opacity: 0.55;
+    filter: drop-shadow(0 0 16px rgba(245, 165, 36, 0.85));
+  }
 }
 
 .ez-header-text {
@@ -421,6 +433,42 @@
   z-index: -1;
 }
 
+/* ---------- Mobile-only actions (inside hamburger) ---------- */
+.ez-mobile-actions {
+  display: none;                 /* hidden by default; shown inside mobile menu */
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--h-border);
+}
+/* Two-class selector beats single .ez-lang-switch / .ez-theme-switch */
+.ez-mobile-action.ez-lang-switch,
+.ez-mobile-action.ez-theme-switch {
+  flex: 1;
+  height: 44px;
+  padding-inline: 14px;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--h-gold) 45%, transparent);
+  background: color-mix(in srgb, var(--h-gold) 8%, transparent);
+  color: var(--h-gold);
+  font-size: 13px;
+  font-weight: 700;
+}
+.ez-mobile-action.ez-lang-switch:hover,
+.ez-mobile-action.ez-theme-switch:hover {
+  background: color-mix(in srgb, var(--h-gold) 16%, transparent);
+  border-color: var(--h-gold);
+  color: var(--h-gold-soft);
+}
+.ez-mobile-action .ez-theme-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--h-fg);
+  margin-inline-start: 8px;
+}
+
 /* ---------- Search dialog ---------- */
 .ez-search-overlay {
   position: fixed;
@@ -532,6 +580,10 @@
   .ez-header { --ez-header-h: 68px; }
   .ez-header-tagline { display: none; }
   .ez-menu-toggle { display: grid; }
+
+  /* Hide ALL top-bar actions on mobile — minimal look */
+  .ez-action--desktop { display: none !important; }
+
   .ez-header-cta--desktop { display: none; }
   .ez-header-cta--mobile {
     display: inline-flex;
@@ -539,7 +591,6 @@
     margin-top: 10px;
     width: 100%;
   }
-  .ez-lang-label { display: none; }
   .ez-header-actions { margin-inline-start: auto; }
 
   /* slightly smaller logo on tablet */
@@ -550,6 +601,9 @@
   .ez-header-name {
     font-size: 19px;
   }
+
+  /* Show mobile actions row inside hamburger */
+  .ez-mobile-actions { display: flex; }
 
   .ez-header-nav {
     position: fixed;
@@ -619,7 +673,8 @@
   .ez-header-cta,
   .ez-icon-btn,
   .ez-search-box,
-  .ez-search-results button {
+  .ez-search-results button,
+  .ez-header-logo {
     transition: none;
     animation: none;
   }

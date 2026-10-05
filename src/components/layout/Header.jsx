@@ -209,16 +209,49 @@ function Header() {
             {t('nav.contact')}
           </NavLink>
 
+          {/* ---------- Mobile-only actions (inside hamburger) ---------- */}
+          <div className="ez-mobile-actions">
+            <button
+              type="button"
+              className="ez-lang-switch ez-mobile-action"
+              onClick={toggleLanguage}
+              aria-label="Toggle language"
+            >
+              <span className="ez-flag" aria-hidden="true">
+                {isFa ? <GB title="English" /> : <IR title="فارسی" />}
+              </span>
+              <span className="ez-lang-label">{isFa ? 'English' : 'فارسی'}</span>
+            </button>
+
+            <button
+              type="button"
+              className="ez-theme-switch ez-mobile-action"
+              onClick={toggleTheme}
+              role="switch"
+              aria-checked={theme === 'dark'}
+              aria-label="Toggle theme"
+            >
+              <span className="ez-theme-track">
+                <span className="ez-theme-knob">
+                  {theme === 'light' ? <Sun size={13} /> : <Moon size={13} />}
+                </span>
+              </span>
+              <span className="ez-theme-label">
+                {theme === 'light' ? L('روشن', 'Light') : L('تاریک', 'Dark')}
+              </span>
+            </button>
+          </div>
+
           <Link to="/login" className="ez-header-cta ez-header-cta--mobile" onClick={closeAll}>
             <LogIn size={16} /> {t('login')}
           </Link>
         </nav>
 
-        {/* ---------- Actions ---------- */}
+        {/* ---------- Actions (desktop only on mobile) ---------- */}
         <div className="ez-header-actions">
           <button
             type="button"
-            className="ez-search-btn"
+            className="ez-search-btn ez-action--desktop"
             onClick={() => setSearchOpen(true)}
             aria-label={L('جستجو', 'Search')}
           >
@@ -227,7 +260,12 @@ function Header() {
             <kbd>Ctrl K</kbd>
           </button>
 
-          <button type="button" className="ez-lang-switch" onClick={toggleLanguage} aria-label="Toggle language">
+          <button
+            type="button"
+            className="ez-lang-switch ez-action--desktop"
+            onClick={toggleLanguage}
+            aria-label="Toggle language"
+          >
             <span className="ez-flag" aria-hidden="true">
               {isFa ? <GB title="English" /> : <IR title="فارسی" />}
             </span>
@@ -236,7 +274,7 @@ function Header() {
 
           <button
             type="button"
-            className="ez-theme-switch"
+            className="ez-theme-switch ez-action--desktop"
             onClick={toggleTheme}
             role="switch"
             aria-checked={theme === 'dark'}

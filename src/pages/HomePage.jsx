@@ -1,15 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ShieldCheck, ArrowRight, PlayCircle, Building2, Puzzle, Globe,
-  FileDown, Warehouse, Share2, Award, ClipboardList, Truck, CheckCheck, CheckCircle2,
-} from 'lucide-react';
+import useHomeFx from '../hooks/useHomeFx';
 import './HomePage.css';
-
-const ICONS = {
-  Building2, Puzzle, Globe, ShieldCheck,
-  FileDown, Warehouse, Share2, Award, ClipboardList, Truck,
-};
+import './HomePage.fx.css';
 
 const STEPS = [
   { n: '01', title_fa: 'ثبت شرکت', title_en: 'Register Company', desc_fa: 'راه‌اندازی شرکت در یکی از مناطق ویژه اقتصادی مجاز ایران.', desc_en: "Corporate setup within one of Iran's licensed Special Economic Zones." },
@@ -31,6 +24,11 @@ const CHECKLIST = [
   { fa: 'محدودیت نرخ API اختصاصی', en: 'Dedicated API Rate Limits' },
 ];
 
+const BIGTEXT = {
+  fa: ['گمرک', 'انبار', 'تولید', 'اظهارنامه'],
+  en: ['Customs', 'Warehouse', 'Production', 'Declaration'],
+};
+
 const heroMove = (e) => {
   const el = e.currentTarget;
   const r = el.getBoundingClientRect();
@@ -47,6 +45,23 @@ const heroLeave = (e) => {
   e.currentTarget.style.setProperty('--ry', '0deg');
 };
 
+/* Placeholder instead of an icon: swap for real artwork later */
+function Ph({ size = '' }) {
+  return <span className={`ezh-ph ${size}`} aria-hidden="true" />;
+}
+
+/* Minimal train on a rail: each word is a wagon */
+function Train({ words }) {
+  const row = [...words, ...words, ...words];
+  return (
+    <div className="ezh-rail-train" data-marquee="1">
+      {row.map((w, i) => (
+        <span key={`${w}-${i}`} className="ezh-wagon">{w}</span>
+      ))}
+    </div>
+  );
+}
+
 function HomePage() {
   const { t, i18n } = useTranslation();
   const isFa = i18n.language === 'fa';
@@ -60,7 +75,7 @@ function HomePage() {
   const homeRef = useRef(null);
 
   useEffect(() => {
-   fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/home`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/home`)
       .then((r) => {
         if (!r.ok) throw new Error('bad response');
         return r.json();
@@ -74,96 +89,73 @@ function HomePage() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (loading || error) return undefined;
-    const root = homeRef.current;
-    if (!root) return undefined;
-    const nodes = root.querySelectorAll('.ezh-reveal');
-    if (!nodes.length) return undefined;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('ezh-reveal--visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
-    );
-
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, [loading, error, stats.length, features.length, roadmap.length]);
+  useHomeFx(homeRef, !loading && !error, [
+    i18n.language, stats.length, features.length, roadmap.length,
+  ]);
 
   if (loading) return <div className="ez-home"><div className="ezh-loading">Loading…</div></div>;
   if (error) return <div className="ez-home"><div className="ezh-loading">خطا در بارگذاری / Failed to load</div></div>;
 
+  const bigWords = isFa ? BIGTEXT.fa : BIGTEXT.en;
+
   return (
     <div className="ez-home" ref={homeRef}>
-{/* Hero */}{/* Hero — video banner + text below */}
-<section className="ezh-vhero" onMouseMove={heroMove} onMouseLeave={heroLeave}>
-  <div className="ezh-vhero-banner">
-    <video
-      className="ezh-vhero-video"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-      aria-hidden="true"
-    >
-      <source src="/video/hero-home.mp4" type="video/mp4" />
-    </video>
-    <div className="ezh-vhero-shade" aria-hidden="true" />
-  </div>
+      <div className="ezh-progress" aria-hidden="true" />
 
-  <div className="ezh-vhero-body">
-    <div className="ezh-hero-content">
-      <span className="ezh-pill">{t('homePage.hero.pill')}</span>
-      <h1 className="ezh-hero-title">{t('homePage.hero.title')}</h1>
-      <p className="ezh-hero-sub">{t('homePage.hero.subtitle')}</p>
-      <div className="ezh-hero-actions">
-        <button className="ez-btn-lg ez-btn-lg--primary">
-          {t('homePage.hero.cta1')} <ArrowRight size={18} className="btn-arrow" />
-        </button>
-        <button className="ez-btn-lg ez-btn-lg--outline">
-          <PlayCircle size={18} /> {t('homePage.hero.cta2')}
-        </button>
-      </div>
-    </div>
+      {/* Hero — video banner + text */}
+      <section className="ezh-vhero" data-bleed onMouseMove={heroMove} onMouseLeave={heroLeave}>
+        <div className="ezh-vhero-banner">
+          <video className="ezh-vhero-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
+            <source src="/video/hero-home.mp4" type="video/mp4" />
+          </video>
+          <div className="ezh-vhero-shade" aria-hidden="true" />
+        </div>
 
-    <div className="ezh-mockup">
-      <div className="ezh-mockup-bar">
-        <div className="ezh-mockup-dots"><span></span><span></span><span></span></div>
-        <span className="ezh-mockup-label">{t('homePage.hero.panelTitle')}</span>
-      </div>
-      <div className="ezh-mockup-stats">
-        <div><strong>4</strong><span>{isFa ? 'شرکت فعال' : 'Active companies'}</span></div>
-        <div><strong>12</strong><span>{isFa ? 'اظهارنامه امروز' : "Today's declarations"}</span></div>
-        <div><strong>99.9%</strong><span>{t('homePage.hero.sysOk')}</span></div>
-      </div>
-      <ul className="ezh-mockup-rows">
-        <li>
-          <span>{isFa ? 'صنایع فولاد پارس' : 'Persian Steel Industries'}</span>
-          <span className="ezh-badge ezh-badge--ok">{isFa ? 'تایید شده' : 'Approved'}</span>
-        </li>
-        <li>
-          <span>{isFa ? 'نساجی البرز' : 'Alborz Textile'}</span>
-          <span className="ezh-badge ezh-badge--pending">{isFa ? 'در حال بررسی' : 'Reviewing'}</span>
-        </li>
-        <li>
-          <span>{isFa ? 'پتروشیمی خزر' : 'Caspian Petrochemical'}</span>
-          <span className="ezh-badge ezh-badge--wait">{isFa ? 'در انتظار مدارک' : 'Awaiting docs'}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
+        <div className="ezh-vhero-body">
+          <div className="ezh-hero-content">
+            <span className="ezh-pill">{t('homePage.hero.pill')}</span>
+            <h1 className="ezh-hero-title">{t('homePage.hero.title')}</h1>
+            <p className="ezh-hero-sub">{t('homePage.hero.subtitle')}</p>
+            <div className="ezh-hero-actions">
+              <button className="ez-btn-lg ez-btn-lg--primary ez-btn-lg--arrow">
+                {t('homePage.hero.cta1')}
+              </button>
+              <button className="ez-btn-lg ez-btn-lg--outline">
+                {t('homePage.hero.cta2')}
+              </button>
+            </div>
+          </div>
+
+          <div className="ezh-mockup">
+            <div className="ezh-mockup-bar">
+              <div className="ezh-mockup-dots"><span></span><span></span><span></span></div>
+              <span className="ezh-mockup-label">{t('homePage.hero.panelTitle')}</span>
+            </div>
+            <div className="ezh-mockup-stats">
+              <div><strong className="ezh-count">4</strong><span>{isFa ? 'شرکت فعال' : 'Active companies'}</span></div>
+              <div><strong className="ezh-count">12</strong><span>{isFa ? 'اظهارنامه امروز' : "Today's declarations"}</span></div>
+              <div><strong className="ezh-count">99.9%</strong><span>{t('homePage.hero.sysOk')}</span></div>
+            </div>
+            <ul className="ezh-mockup-rows">
+              <li>
+                <span>{isFa ? 'صنایع فولاد پارس' : 'Persian Steel Industries'}</span>
+                <span className="ezh-badge ezh-badge--ok">{isFa ? 'تایید شده' : 'Approved'}</span>
+              </li>
+              <li>
+                <span>{isFa ? 'نساجی البرز' : 'Alborz Textile'}</span>
+                <span className="ezh-badge ezh-badge--pending">{isFa ? 'در حال بررسی' : 'Reviewing'}</span>
+              </li>
+              <li>
+                <span>{isFa ? 'پتروشیمی خزر' : 'Caspian Petrochemical'}</span>
+                <span className="ezh-badge ezh-badge--wait">{isFa ? 'در انتظار مدارک' : 'Awaiting docs'}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
       {/* Trusted by */}
-      <section className="ezh-section ezh-trusted ezh-reveal">
+      <section className="ezh-section ezh-trusted" data-fx="up">
         <p className="ezh-trusted-label">{t('homePage.trusted.label')}</p>
         <div className="ezh-trusted-marquee" aria-hidden="true">
           <div className="ezh-trusted-track">
@@ -179,12 +171,18 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Mission / intro — full bleed image integration */}
-      <section className="ezh-section ezh-split ezh-fullbleed-split ezh-reveal ezh-reveal--d1">
-        <div className="ezh-split-media">
+      {/* Rail: small train moves along the track while scrolling */}
+      <section className="ezh-rail" data-bleed aria-hidden="true">
+        <Train words={bigWords} />
+        <div className="ezh-rail-bed" />
+      </section>
+
+      {/* Mission */}
+      <section className="ezh-section ezh-split ezh-fullbleed-split" data-bleed>
+        <div className="ezh-split-media" data-fx="left">
           <img src="/image/digitize-your-Trade-Zone.webp" alt={t('homePage.mission.title')} loading="lazy" />
         </div>
-        <div className="ezh-split-copy">
+        <div className="ezh-split-copy" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.mission.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.mission.title')}</h2>
           <p className="ezh-section-sub">{t('homePage.mission.desc')}</p>
@@ -192,47 +190,47 @@ function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="ezh-section ezh-reveal ezh-reveal--d2">
-        <span className="ezh-eyebrow">{t('homePage.stats.eyebrow')}</span>
-        <h2 className="ezh-section-title">{t('homePage.stats.title')}</h2>
-        <div className="ezh-stats-grid">
-          {stats.map((s) => {
-            const Icon = ICONS[s.icon_name] || Building2;
-            return (
-              <div key={s.id} className="ezh-stat-card">
-                <Icon size={22} className="ezh-icon-accent" />
-                <div className="ezh-stat-value">{s.value}</div>
-                <div className="ezh-stat-title">{pick(s, 'title')}</div>
-                <div className="ezh-stat-desc">{pick(s, 'description')}</div>
-              </div>
-            );
-          })}
+      <section className="ezh-section">
+        <div className="ezh-head" data-stagger>
+          <span className="ezh-eyebrow">{t('homePage.stats.eyebrow')}</span>
+          <h2 className="ezh-section-title">{t('homePage.stats.title')}</h2>
+        </div>
+        <div className="ezh-stats-grid" data-bleed data-stagger>
+          {stats.map((s) => (
+            <div key={s.id} className="ezh-stat-card">
+              <Ph size="ezh-ph--xs" />
+              <div className="ezh-stat-value ezh-count">{s.value}</div>
+              <div className="ezh-stat-title">{pick(s, 'title')}</div>
+              <div className="ezh-stat-desc">{pick(s, 'description')}</div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Features */}
-      <section className="ezh-section ezh-reveal ezh-reveal--d1">
-        <span className="ezh-eyebrow">{t('homePage.features.eyebrow')}</span>
-        <h2 className="ezh-section-title">{t('homePage.features.title')}</h2>
-        <div className="ezh-features-grid">
-          {features.map((f) => {
-            const Icon = ICONS[f.icon_name] || FileDown;
-            return (
-              <div key={f.id} className="ezh-feature-card">
-                <div className="ezh-feature-icon"><Icon size={22} /></div>
-                <h3>{pick(f, 'title')}</h3>
-                <p>{pick(f, 'description')}</p>
-              </div>
-            );
-          })}
+      <section className="ezh-section">
+        <div className="ezh-head" data-stagger>
+          <span className="ezh-eyebrow">{t('homePage.features.eyebrow')}</span>
+          <h2 className="ezh-section-title">{t('homePage.features.title')}</h2>
+        </div>
+        <div className="ezh-features-grid" data-bleed data-stagger>
+          {features.map((f) => (
+            <div key={f.id} className="ezh-feature-card">
+              <Ph size="ezh-ph--lg" />
+              <h3>{pick(f, 'title')}</h3>
+              <p>{pick(f, 'description')}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Steps */}
-      <section className="ezh-section ezh-reveal ezh-reveal--d2">
-        <span className="ezh-eyebrow">{t('homePage.steps.eyebrow')}</span>
-        <h2 className="ezh-section-title">{t('homePage.steps.title')}</h2>
-        <div className="ezh-steps-grid">
+      <section className="ezh-section">
+        <div className="ezh-head" data-stagger>
+          <span className="ezh-eyebrow">{t('homePage.steps.eyebrow')}</span>
+          <h2 className="ezh-section-title">{t('homePage.steps.title')}</h2>
+        </div>
+        <div className="ezh-steps-grid" data-bleed data-stagger>
           {STEPS.map((s) => (
             <div key={s.n} className="ezh-step-card">
               <div className="ezh-step-num">{s.n}</div>
@@ -244,44 +242,46 @@ function HomePage() {
       </section>
 
       {/* Logistics */}
-      <section className="ezh-section ezh-logistics-split ezh-reveal">
-        <div className="ezh-logistics-media">
+      <section className="ezh-section ezh-logistics-split" data-bleed>
+        <div className="ezh-logistics-media" data-fx="scale">
           <img src="/image/Logistics.webp" alt={t('homePage.logistics.title')} loading="lazy" />
         </div>
-        <div className="ezh-logistics-copy" dir={isFa ? 'rtl' : 'ltr'}>
+        <div className="ezh-logistics-copy" dir={isFa ? 'rtl' : 'ltr'} data-stagger>
           <span className="ezh-eyebrow">{t('homePage.logistics.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.logistics.title')}</h2>
           <p className="ezh-section-sub">{t('homePage.logistics.desc')}</p>
         </div>
       </section>
 
-      {/* Architecture — multi-tenant isolation */}
-      <section className="ezh-section ezh-arch-grid ezh-reveal ezh-reveal--d1">
-        <div className="ezh-arch-media">
+      {/* Architecture */}
+      <section className="ezh-section ezh-arch-grid" data-bleed>
+        <div className="ezh-arch-media" data-fx="left">
           <img src="/image/Strict-Multi.webp" alt={t('homePage.architecture.title')} loading="lazy" />
         </div>
-        <div>
+        <div className="ezh-arch-copy" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.architecture.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.architecture.title')}</h2>
           <p className="ezh-section-sub">{t('homePage.architecture.desc')}</p>
           <ul className="ezh-checklist">
             {CHECKLIST.map((c) => (
-              <li key={c.en}><CheckCircle2 size={18} className="ezh-icon-accent" /> {isFa ? c.fa : c.en}</li>
+              <li key={c.en}><Ph size="ezh-ph--xs" /> {isFa ? c.fa : c.en}</li>
             ))}
           </ul>
         </div>
       </section>
 
       {/* Roadmap */}
-      <section className="ezh-section ezh-reveal ezh-reveal--d2">
-        <span className="ezh-eyebrow">{t('homePage.roadmap.eyebrow')}</span>
-        <h2 className="ezh-section-title">{t('homePage.roadmap.title')}</h2>
-        <div className="ezh-roadmap-grid">
+      <section className="ezh-section">
+        <div className="ezh-head" data-stagger>
+          <span className="ezh-eyebrow">{t('homePage.roadmap.eyebrow')}</span>
+          <h2 className="ezh-section-title">{t('homePage.roadmap.title')}</h2>
+        </div>
+        <div className="ezh-roadmap-grid" data-bleed data-stagger>
           {roadmap.map((r) => (
             <div key={r.id} className={`ezh-roadmap-card ezh-status--${r.status}`}>
               <div className="ezh-roadmap-top">
                 <span className="ezh-roadmap-phase">
-                  {r.status === 'deployed' && <CheckCheck size={14} />} {r.phase_label}
+                  {r.status === 'deployed' && <Ph size="ezh-ph--xs" />} {r.phase_label}
                 </span>
                 <span className="ezh-roadmap-badge">
                   {r.status === 'deployed' && t('homePage.roadmap.statusDeployed')}
@@ -297,12 +297,14 @@ function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="ezh-section ezh-cta ezh-reveal">
-        <h2 className="ezh-cta-title">{t('homePage.cta.title')}</h2>
-        <p className="ezh-section-sub">{t('homePage.cta.subtitle')}</p>
-        <div className="ezh-hero-actions">
-          <button className="ez-btn-lg ez-btn-lg--primary">{t('homePage.cta.primary')}</button>
-          <button className="ez-btn-lg ez-btn-lg--outline">{t('homePage.cta.secondary')}</button>
+      <section className="ezh-section ezh-cta" data-bleed>
+        <div className="ezh-cta-inner" data-fx="scale">
+          <h2 className="ezh-cta-title">{t('homePage.cta.title')}</h2>
+          <p className="ezh-section-sub">{t('homePage.cta.subtitle')}</p>
+          <div className="ezh-hero-actions">
+            <button className="ez-btn-lg ez-btn-lg--primary ez-btn-lg--arrow">{t('homePage.cta.primary')}</button>
+            <button className="ez-btn-lg ez-btn-lg--outline">{t('homePage.cta.secondary')}</button>
+          </div>
         </div>
       </section>
     </div>
