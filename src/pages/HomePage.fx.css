@@ -764,7 +764,6 @@ body:has(.ez-home) { overflow-x: clip; }
 }
 
 /* ===== Scroll-driven text motion (progressive enhancement, Chrome/Edge) ===== */
-.ez-home { overflow-x: clip; }
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
@@ -817,4 +816,19 @@ body:has(.ez-home) { overflow-x: clip; }
     [dir='rtl'] .ez-home:not(.ezh-fx-lite) .ezh-section-title { animation-name: ezs-title-in-rtl; }
     [dir='rtl'] .ez-home:not(.ezh-fx-lite) .ezh-eyebrow { animation-name: ezs-eyebrow-in-rtl; }
   }
+}
+
+/* ===== Fix: full-bleed sections + responsive process on mobile ===== */
+.ez-public { overflow-x: clip; }
+
+@media (max-width: 900px) {
+  .ez-home .ezp { aspect-ratio: 9 / 14; }
+  .ez-home .ezp-label-in {
+    max-width: 44vw;
+    padding: 5px 8px;
+    gap: 7px;
+  }
+  .ez-home .ezp-num { width: 24px; height: 24px; font-size: .7rem; }
+  .ez-home .ezp-txt strong { font-size: .82rem; line-height: 1.35; }
+  .ez-home .ezp-txt small { font-size: .7rem; line-height: 1.3; }
 }
