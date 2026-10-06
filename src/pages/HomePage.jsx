@@ -2,18 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import useHomeFx from '../hooks/useHomeFx';
 import HeroVideo from '../components/HeroVideo';
-import ModuleVisual from '../components/ModuleVisual';
+import Hero3D from '../components/Hero3D';
+import Process3D from '../components/Process3D';
 import CtaLink from '../components/home/CtaLink';
 import { mergeHomeLinks, linkLabel } from '../config/homeLinks';
 import './HomePage.css';
 import './HomePage.fx.css';
-
-const STEPS = [
-  { n: '01', title_fa: 'ثبت شرکت', title_en: 'Register Company', desc_fa: 'راه‌اندازی شرکت در یکی از مناطق ویژه اقتصادی مجاز ایران.', desc_en: "Corporate setup within one of Iran's licensed Special Economic Zones." },
-  { n: '02', title_fa: 'واردات مواد اولیه', title_en: 'Import Raw Materials', desc_fa: 'ثبت اسناد واردات برای اعتبارسنجی خودکار و ورود فوری به انبار.', desc_en: 'Submit import documents for automated validation & immediate storage.' },
-  { n: '03', title_fa: 'پیگیری تولید', title_en: 'Track Production', desc_fa: 'ثبت محصولات نهایی در مقابل کیل مصرف در سامانه.', desc_en: 'Submit finished goods against Bills of Materials (BOM) on-platform.' },
-  { n: '04', title_fa: 'ارسال اظهارنامه', title_en: 'Submit Declaration', desc_fa: 'صدور آنی گواهی تولید برای معافیت و ترخیص گمرکی.', desc_en: 'Instantly generate production certificates for duty exemption and clearance.' },
-];
 
 const ZONES = [
   { fa: 'منطقه آزاد چابهار', en: 'Chabahar FTZ' },
@@ -135,6 +129,7 @@ function HomePage() {
         <div className="ezh-vhero-banner">
           <HeroVideo className="ezh-vhero-video" />
           <div className="ezh-vhero-shade" aria-hidden="true" />
+          <Hero3D />
         </div>
 
         <div className="ezh-vhero-body">
@@ -236,42 +231,14 @@ function HomePage() {
       </section>
       )}
 
-      {/* Features */}
-      {(loading || features.length > 0) && (
-      <section className="ezh-section">
-        <div className="ezh-head" data-stagger>
-          <span className="ezh-eyebrow">{t('homePage.features.eyebrow')}</span>
-          <h2 className="ezh-section-title">{t('homePage.features.title')}</h2>
-        </div>
-        <div className="ezh-features-grid" data-bleed data-stagger>
-          {features.length === 0 && <Skeletons n={6} />}
-          {features.map((f, i) => (
-            <div key={f.id} className="ezh-feature-card ezh-feature-card--art">
-              <ModuleVisual name={f.icon_name} index={i} />
-              <div className="ezh-feature-body">
-                <h3>{pick(f, 'title')}</h3>
-                <p>{pick(f, 'description')}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      )}
-
-      {/* Steps */}
-      <section className="ezh-section">
+      {/* Process: 3D route (replaces Features + Steps) */}
+      <section className="ezh-section ezh-process-section" data-bleed>
         <div className="ezh-head" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.steps.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.steps.title')}</h2>
         </div>
-        <div className="ezh-steps-grid" data-bleed data-stagger>
-          {STEPS.map((s) => (
-            <div key={s.n} className="ezh-step-card">
-              <div className="ezh-step-num">{s.n}</div>
-              <h3>{pick(s, 'title')}</h3>
-              <p>{pick(s, 'desc')}</p>
-            </div>
-          ))}
+        <div className="ezh-process" data-fx="scale">
+          <Process3D />
         </div>
       </section>
 

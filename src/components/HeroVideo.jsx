@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const POSTER = '/image/hero-poster.webp';
 const DESKTOP_SRC = '/video/hero-home.mp4';
-const MOBILE_SRC = '/video/hero-home-banner.mp4';
+const MOBILE_SRC = '/video/hero-home.mp4';
 
 /**
  * Hero background video that never blocks first paint:
@@ -21,7 +21,7 @@ export default function HeroVideo({ className }) {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (slow || reduce) return undefined;
 
-    const mobile = window.matchMedia('(max-width: 768px)').matches;
+    const mobile = window.matchMedia('(max-width: 900px)').matches;
     const pick = () => setSrc(mobile ? MOBILE_SRC : DESKTOP_SRC);
     let timer;
     let idle;
