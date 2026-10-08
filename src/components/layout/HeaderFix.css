@@ -1,0 +1,146 @@
+/* =====================================================
+   E-ZONE · Header fix (loaded AFTER Header.css)
+   - hamburger + mobile actions: clean, aligned, responsive
+   - language + theme buttons share one row, same height
+   - neat press / focus states (no thick browser box)
+   ===================================================== */
+
+/* ---- neat focus: soft ring instead of the thick outline ---- */
+.ez-header .ez-icon-btn:focus,
+.ez-header .ez-mobile-action:focus,
+.ez-header .ez-lang-switch:focus,
+.ez-header .ez-theme-switch:focus,
+.ez-header .ez-header-cta:focus {
+  outline: none;
+}
+.ez-header .ez-icon-btn:focus-visible,
+.ez-header .ez-mobile-action:focus-visible,
+.ez-header .ez-lang-switch:focus-visible,
+.ez-header .ez-theme-switch:focus-visible,
+.ez-header .ez-header-cta:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--h-panel),
+    0 0 0 4px color-mix(in srgb, var(--h-gold) 75%, transparent);
+}
+.ez-header button,
+.ez-header a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- hamburger button ---- */
+.ez-header .ez-icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.ez-header .ez-icon-btn:active {
+  transform: scale(0.94);
+}
+.ez-header .ez-icon-btn[aria-expanded='true'] {
+  background: color-mix(in srgb, var(--h-gold) 22%, transparent);
+  border-color: var(--h-gold);
+}
+
+/* ---- mobile menu actions: ONE row, equal size, centered ---- */
+@media (max-width: 1023px) {
+  .ez-header .ez-mobile-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+
+  .ez-header .ez-mobile-action.ez-lang-switch,
+  .ez-header .ez-mobile-action.ez-theme-switch {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+    margin: 0;
+    padding: 0 12px;
+    box-sizing: border-box;
+    border: 1px solid color-mix(in srgb, var(--h-gold) 45%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--h-gold) 8%, transparent);
+    color: var(--h-gold);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .ez-header .ez-mobile-action.ez-lang-switch:hover,
+  .ez-header .ez-mobile-action.ez-theme-switch:hover {
+    background: color-mix(in srgb, var(--h-gold) 14%, transparent);
+    border-color: color-mix(in srgb, var(--h-gold) 70%, transparent);
+  }
+  /* pressed: subtle scale + gold fill, no heavy box */
+  .ez-header .ez-mobile-action.ez-lang-switch:active,
+  .ez-header .ez-mobile-action.ez-theme-switch:active {
+    transform: scale(0.97);
+    background: color-mix(in srgb, var(--h-gold) 22%, transparent);
+    border-color: var(--h-gold);
+  }
+
+  /* theme switch internals: track + label on the same line */
+  .ez-header .ez-mobile-action .ez-theme-track {
+    flex: none;
+    width: 44px;
+    height: 24px;
+  }
+  .ez-header .ez-mobile-action .ez-theme-knob {
+    top: 1px;
+    width: 20px;
+    height: 20px;
+  }
+  .ez-header .ez-mobile-action .ez-theme-label {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--h-fg);
+  }
+  .ez-header .ez-mobile-action .ez-flag {
+    flex: none;
+  }
+  .ez-header .ez-mobile-action .ez-lang-label {
+    line-height: 1;
+  }
+
+  /* login button right under the row, same radius/height rhythm */
+  .ez-header .ez-header-cta--mobile {
+    height: 46px;
+    margin-top: 10px;
+    border-radius: 12px;
+  }
+
+  /* menu panel: smooth scroll, safe area on notched phones */
+  .ez-header-nav {
+    overscroll-behavior: contain;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* very small phones: keep the row, tighten spacing */
+@media (max-width: 380px) {
+  .ez-header .ez-mobile-actions {
+    gap: 8px;
+  }
+  .ez-header .ez-mobile-action.ez-lang-switch,
+  .ez-header .ez-mobile-action.ez-theme-switch {
+    gap: 8px;
+    padding: 0 8px;
+    font-size: 12.5px;
+  }
+}

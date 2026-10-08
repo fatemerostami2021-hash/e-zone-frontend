@@ -4,15 +4,30 @@ import { Send as TelegramIcon } from 'lucide-react';
 import { openCookieSettings } from '../cookieUtils';
 import { Instagram, Linkedin, Facebook } from './BrandIcons';
 import './Footer.css';
+import './Footer3D.css';
 
-function PlaneIcon() {
+const PLANE_PATH =
+  'M60 32 44 27 30 8h-8l10 20H14l-6-8H3l5 12-5 12h5l6-8h18L22 56h8l14-19z';
+const PLANE_LAYERS = 9; // more layers = thicker 3D body
+
+// 3D airplane: stacked SVG slices on the Z axis (pure CSS, no library)
+function Plane3D() {
   return (
-    <svg viewBox="0 0 64 64" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M60 32 44 27 30 8h-8l10 20H14l-6-8H3l5 12-5 12h5l6-8h18L22 56h8l14-19z"
-      />
-    </svg>
+    <span className="ez-plane3d" aria-hidden="true">
+      <span className="ez-plane3d-shadow" />
+      <span className="ez-plane3d-body">
+        {Array.from({ length: PLANE_LAYERS }, (_, i) => (
+          <svg
+            key={i}
+            viewBox="0 0 64 64"
+            className="ez-plane3d-layer"
+            style={{ '--i': i }}
+          >
+            <path fill="currentColor" d={PLANE_PATH} />
+          </svg>
+        ))}
+      </span>
+    </span>
   );
 }
 
@@ -55,12 +70,12 @@ function Footer() {
 
   return (
     <footer className="ez-footer">
-      {/* هواپیمای در حال حرکت */}
+      {/* هواپیمای سه‌بعدی در حال حرکت */}
       <div className="ez-sky" aria-hidden="true">
         <span className="ez-sky-route" />
         <span className="ez-plane">
           <span className="ez-plane-trail" />
-          <PlaneIcon />
+          <Plane3D />
         </span>
       </div>
 
@@ -140,6 +155,5 @@ function Footer() {
     </footer>
   );
 }
-
 
 export default Footer;

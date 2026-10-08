@@ -8,6 +8,7 @@ import {
 import { useTheme } from '../../theme/useTheme';
 import { GB, IR } from 'country-flag-icons/react/3x2';
 import './Header.css';
+import './HeaderFix.css';
 
 // ⚠️ عنوان‌ها و لینک‌ها را با ماژول‌های واقعی E-ZONE عوض کن
 const MODULES = [
