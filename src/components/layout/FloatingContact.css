@@ -42,26 +42,77 @@
   outline-offset: 2px;
 }
 
-/* ---------- Floating button ---------- */
+/* ---------- Floating button (pill: rotating icon + short label) ---------- */
 .ezf-fab {
   position: relative;
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
+  height: 56px;
+  min-width: 56px;
+  padding-inline: 8px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   border: 0;
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--f-accent);
   color: var(--f-accent-ink);
+  font: inherit;
   cursor: pointer;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     0 12px 28px -8px rgba(0, 0, 0, 0.55);
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s, transform 0.2s, padding 0.2s;
 }
-.ezf-fab:hover {
-  background: var(--f-accent-hover);
-  transform: translateY(-2px);
+.ezf-fab.is-open { padding-inline: 0; width: 56px; justify-content: center; }
+.ezf-fab:hover { background: var(--f-accent-hover); transform: translateY(-2px); }
+
+/* icon slot: icons are stacked and cross-fade */
+.ezf-fab-icons {
+  position: relative;
+  flex: 0 0 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(26, 18, 3, 0.1);
+}
+.ezf-fab.is-open .ezf-fab-icons { background: none; }
+.ezf-fab-ico {
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.6) rotate(-25deg);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.ezf-fab-ico.is-on { opacity: 1; transform: none; }
+
+.ezf-fab-label {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* blinking "online" dot */
+.ezf-live {
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--f-accent);
+}
+.ezf-live::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: ezf-blink 1.6s ease-out infinite;
+}
+@keyframes ezf-blink {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
 
 /* soft pulse ring while closed */
@@ -69,14 +120,14 @@
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: 999px;
   border: 2px solid var(--f-accent);
   animation: ezf-pulse 2.6s ease-out infinite;
   pointer-events: none;
 }
 @keyframes ezf-pulse {
   0%   { transform: scale(1);   opacity: 0.55; }
-  100% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.35, 1.6); opacity: 0; }
 }
 
 /* ---------- Panel ---------- */
@@ -359,7 +410,9 @@
 
 /* ---------- Mobile ---------- */
 @media (max-width: 480px) {
-  .ezf-fab { width: 54px; height: 54px; }
+  /* phones: icon-only circle */
+  .ezf-fab { height: 54px; min-width: 54px; padding-inline: 7px; }
+  .ezf-fab-label { display: none; }
   .ezf-panel { bottom: 68px; max-height: 70vh; }
 }
 
@@ -367,10 +420,12 @@
 @media (prefers-reduced-motion: reduce) {
   .ezf-panel,
   .ezf:not(.is-open) .ezf-fab::after,
+  .ezf-live::after,
   .ezf-typing span {
     animation: none;
   }
   .ezf-fab,
+  .ezf-fab-ico,
   .ezf-acc-q svg {
     transition: none;
   }

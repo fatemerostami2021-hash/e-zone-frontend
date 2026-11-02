@@ -1,13 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import {
+  Building2, Layers, Languages, ShieldCheck, Database, Lock, Gauge,
+  CheckCircle2, Loader, Clock, MapPin, ArrowUpRight,
+} from 'lucide-react';
 import useHomeFx from '../hooks/useHomeFx';
 import HeroVideo from '../components/HeroVideo';
 import Hero3D from '../components/Hero3D';
 import Process3D from '../components/Process3D';
 import CtaLink from '../components/home/CtaLink';
+import ModuleVisual from '../components/ModuleVisual';
+import { MODULE_META, FEATURED_MODULES } from '../data/moduleMeta';
 import { mergeHomeLinks, linkLabel } from '../config/homeLinks';
 import './HomePage.css';
 import './HomePage.fx.css';
+import './HomePage.polish.css';
 
 const ZONES = [
   { fa: 'منطقه آزاد چابهار', en: 'Chabahar FTZ' },
@@ -17,10 +25,13 @@ const ZONES = [
 ];
 
 const CHECKLIST = [
-  { fa: 'جداسازی کامل داده در سطح Schema', en: 'Isolated Schema Database Layers' },
-  { fa: 'مخازن فایل رمزنگاری‌شده به‌ازای هر شرکت', en: 'Encrypted File Repositories per Company' },
-  { fa: 'محدودیت نرخ API اختصاصی', en: 'Dedicated API Rate Limits' },
+  { icon: Database, fa: 'جداسازی کامل داده در سطح Schema', en: 'Isolated Schema Database Layers' },
+  { icon: Lock, fa: 'مخازن فایل رمزنگاری‌شده به‌ازای هر شرکت', en: 'Encrypted File Repositories per Company' },
+  { icon: Gauge, fa: 'محدودیت نرخ API اختصاصی', en: 'Dedicated API Rate Limits' },
 ];
+
+const STAT_ICONS = [Building2, Layers, Languages, ShieldCheck];
+const STATUS_ICONS = { deployed: CheckCircle2, activeDev: Loader, upcoming: Clock };
 
 const BIGTEXT = {
   fa: ['گمرک', 'انبار', 'تولید', 'اظهارنامه'],
@@ -42,11 +53,6 @@ const heroLeave = (e) => {
   e.currentTarget.style.setProperty('--rx', '0deg');
   e.currentTarget.style.setProperty('--ry', '0deg');
 };
-
-/* Placeholder instead of an icon: swap for real artwork later */
-function Ph({ size = '' }) {
-  return <span className={`ezh-ph ${size}`} aria-hidden="true" />;
-}
 
 /* Minimal train on a rail: each word is a wagon */
 function Train({ words }) {
@@ -181,13 +187,13 @@ function HomePage() {
         <div className="ezh-trusted-marquee" aria-hidden="true">
           <div className="ezh-trusted-track">
             {[...ZONES, ...ZONES].map((z, i) => (
-              <span key={`${z.en}-${i}`} className="ezh-trusted-item">{isFa ? z.fa : z.en}</span>
+              <span key={`${z.en}-${i}`} className="ezh-trusted-item"><MapPin size={16} aria-hidden="true" />{isFa ? z.fa : z.en}</span>
             ))}
           </div>
         </div>
         <div className="ezh-trusted-row">
           {ZONES.map((z) => (
-            <span key={z.en} className="ezh-trusted-item">{isFa ? z.fa : z.en}</span>
+            <span key={z.en} className="ezh-trusted-item"><MapPin size={16} aria-hidden="true" />{isFa ? z.fa : z.en}</span>
           ))}
         </div>
       </section>
@@ -212,24 +218,57 @@ function HomePage() {
 
       {/* Stats */}
       {(loading || stats.length > 0) && (
-      <section className="ezh-section">
+      <section className="ezh-section ezh-pad">
         <div className="ezh-head" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.stats.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.stats.title')}</h2>
         </div>
         <div className="ezh-stats-grid" data-bleed data-stagger>
           {stats.length === 0 && <Skeletons n={4} />}
-          {stats.map((s) => (
+          {stats.map((s, i) => {
+            const StatIcon = STAT_ICONS[i % STAT_ICONS.length];
+            return (
             <div key={s.id} className="ezh-stat-card">
-              <Ph size="ezh-ph--xs" />
+              <span className="ezh-icon-chip"><StatIcon size={20} aria-hidden="true" /></span>
               <div className="ezh-stat-value ezh-count">{s.value}</div>
               <div className="ezh-stat-title">{pick(s, 'title')}</div>
               <div className="ezh-stat-desc">{pick(s, 'description')}</div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
       )}
+
+      {/* Modules showcase: the visual proof of what the platform covers */}
+      <section className="ezh-section ezh-pad ezh-modsec">
+        <div className="ezh-head ezh-head--row" data-stagger>
+          <div>
+            <span className="ezh-eyebrow">{isFa ? 'ماژول‌های سامانه' : 'Platform modules'}</span>
+            <h2 className="ezh-section-title">
+              {isFa ? 'هر مرحله، یک ماژول؛ همه در یک زنجیره' : 'One module per step, one connected chain'}
+            </h2>
+          </div>
+          <Link to="/modules" className="ezh-more">
+            {isFa ? 'همه ۱۵ ماژول' : 'All 15 modules'}
+            <ArrowUpRight size={18} className="ezh-more-ico" aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="ezh-features-grid" data-stagger>
+          {FEATURED_MODULES.map((key, i) => {
+            const meta = MODULE_META[key];
+            return (
+              <Link key={key} to="/modules" className="ezh-feature-card ezh-feature-card--art">
+                <ModuleVisual name={meta.icon} index={i} />
+                <div className="ezh-feature-body">
+                  <h3>{t(`modules.${key}`)}</h3>
+                  <p>{isFa ? meta.fa : meta.en}</p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Process: 3D route (replaces Features + Steps) */}
       <section className="ezh-section ezh-process-section" data-bleed>
@@ -265,7 +304,10 @@ function HomePage() {
           <p className="ezh-section-sub">{t('homePage.architecture.desc')}</p>
           <ul className="ezh-checklist">
             {CHECKLIST.map((c) => (
-              <li key={c.en}><Ph size="ezh-ph--xs" /> {isFa ? c.fa : c.en}</li>
+              <li key={c.en}>
+                <span className="ezh-icon-chip ezh-icon-chip--sm"><c.icon size={16} aria-hidden="true" /></span>
+                {isFa ? c.fa : c.en}
+              </li>
             ))}
           </ul>
         </div>
@@ -273,18 +315,20 @@ function HomePage() {
 
       {/* Roadmap */}
       {(loading || roadmap.length > 0) && (
-      <section className="ezh-section">
+      <section className="ezh-section ezh-pad">
         <div className="ezh-head" data-stagger>
           <span className="ezh-eyebrow">{t('homePage.roadmap.eyebrow')}</span>
           <h2 className="ezh-section-title">{t('homePage.roadmap.title')}</h2>
         </div>
         <div className="ezh-roadmap-grid" data-bleed data-stagger>
           {roadmap.length === 0 && <Skeletons n={5} />}
-          {roadmap.map((r) => (
+          {roadmap.map((r) => {
+            const StatusIcon = STATUS_ICONS[r.status] || Clock;
+            return (
             <div key={r.id} className={`ezh-roadmap-card ezh-status--${r.status}`}>
               <div className="ezh-roadmap-top">
                 <span className="ezh-roadmap-phase">
-                  {r.status === 'deployed' && <Ph size="ezh-ph--xs" />} {r.phase_label}
+                  <StatusIcon size={16} aria-hidden="true" /> {r.phase_label}
                 </span>
                 <span className="ezh-roadmap-badge">
                   {r.status === 'deployed' && t('homePage.roadmap.statusDeployed')}
@@ -295,7 +339,8 @@ function HomePage() {
               <h3>{pick(r, 'title')}</h3>
               <p>{pick(r, 'description')}</p>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
       )}

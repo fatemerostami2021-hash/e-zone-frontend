@@ -116,6 +116,8 @@ function FloatingContact() {
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
   const [typing, setTyping] = useState(false);
+  const [spin, setSpin] = useState(0); // which icon the button is showing
+  const [paused, setPaused] = useState(false);
 
   const rootRef = useRef(null);
   const bodyRef = useRef(null);
@@ -141,6 +143,15 @@ function FloatingContact() {
       document.removeEventListener('mousedown', onDown);
     };
   }, [open]);
+
+  /* Button icon cycles: chat -> each social network, every 2.4 s.
+     Stops while the panel is open, on hover/focus, and with reduced motion. */
+  useEffect(() => {
+    if (open || paused) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const id = setInterval(() => setSpin((n) => (n + 1) % (SOCIALS.length + 1)), 2400);
+    return () => clearInterval(id);
+  }, [open, paused]);
 
   /* Keep the chat scrolled to the newest message */
   useEffect(() => {
@@ -329,27 +340,33 @@ function FloatingContact() {
         </section>
       )}
 
-    <button
-  type="button"
-  className="ezf-fab"
-  onClick={toggle}
-  aria-expanded={open}
-  aria-controls="ezf-panel"
-  aria-label={
-    open
-      ? L('بستن', 'Close')
-      : L('پشتیبانی و ارتباط با ما', 'Support and contact')
-  }
->
-  <span className="ezf-fab-icon">
-    {open ? <X size={24} /> : <MessageCircle size={24} />}
-  </span>
-  {!open && (
-    <span className="ezf-fab-label">
-      {L('پشتیبانی', 'Support')}
-    </span>
-  )}
-</button>
+      <button
+        type="button"
+        className={`ezf-fab${open ? ' is-open' : ''}`}
+        onClick={toggle}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={() => setPaused(false)}
+        aria-expanded={open}
+        aria-controls="ezf-panel"
+        aria-label={open ? L('بستن', 'Close') : L('پشتیبانی و ارتباط با ما', 'Support and contact')}
+      >
+        <span className="ezf-fab-icons" aria-hidden="true">
+          {open ? (
+            <X size={22} className="ezf-fab-ico is-on" />
+          ) : (
+            <>
+              <MessageCircle size={22} className={`ezf-fab-ico${spin === 0 ? ' is-on' : ''}`} />
+              {SOCIALS.map(({ id, icon: Icon }, i) => (
+                <Icon key={id} size={22} className={`ezf-fab-ico${spin === i + 1 ? ' is-on' : ''}`} />
+              ))}
+            </>
+          )}
+        </span>
+        {!open && <span className="ezf-fab-label">{L('پشتیبانی', 'Support')}</span>}
+        {!open && <span className="ezf-live" aria-hidden="true" />}
+      </button>
     </div>
   );
 }

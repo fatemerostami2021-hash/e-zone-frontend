@@ -1,0 +1,135 @@
+/* HomePage.polish.css — loaded LAST. Visual hierarchy, whitespace rhythm, type scale, icon chips.
+   Follows the ui-ux-pro-max "Trust & Authority" pattern for B2B: calm surfaces, strong titles, visible proof. */
+
+.ez-home {
+  --ezh-section-gap: clamp(3rem, 6.5vw, 6rem);
+  gap: var(--ezh-section-gap);
+}
+/* content sections get their own breathing room; full-bleed image splits keep theirs */
+.ez-home .ezh-pad { padding-block: clamp(0.5rem, 2vw, 1.5rem); }
+
+/* ---------- Section header: eyebrow chip -> title -> sub ---------- */
+.ez-home .ezh-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 28%, transparent);
+  color: color-mix(in srgb, var(--color-accent) 78%, var(--color-ink));
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.ez-home .ezh-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+[dir='rtl'] .ez-home .ezh-eyebrow,
+[dir='rtl'] .ezh-trusted-label { letter-spacing: 0; }
+
+.ez-home .ezh-section-title {
+  font-weight: 800;
+  line-height: 1.22;
+  margin: 1rem 0 1.25rem;
+  text-wrap: balance;
+}
+[dir='rtl'] .ez-home .ezh-section-title { line-height: 1.35; }
+.ez-home .ezh-section-sub {
+  max-width: 38rem;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+[dir='rtl'] .ez-home .ezh-section-sub { line-height: 2; }
+
+.ezh-head--row {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+}
+.ezh-head--row .ezh-section-title { margin-bottom: 0.25rem; max-width: 30ch; }
+
+.ezh-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+  border-block-end: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+.ezh-more:hover { border-color: currentColor; }
+[dir='rtl'] .ezh-more-ico { transform: scaleX(-1); }
+
+/* ---------- Icon chips (replace the old dashed placeholders) ---------- */
+.ezh-icon-chip {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+.ezh-icon-chip--sm { width: 32px; height: 32px; border-radius: 9px; margin: 0; }
+
+/* ---------- Trusted zones ---------- */
+.ezh-trusted { padding-block: clamp(1.5rem, 3vw, 2.25rem); }
+.ezh-trusted-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.ezh-trusted-item svg { color: var(--color-accent); flex: none; }
+.ezh-trusted-marquee:hover .ezh-trusted-track { animation-play-state: paused; }
+
+/* ---------- Stats: number is the hero of the card ---------- */
+.ezh-stat-card { padding: clamp(1.25rem, 2.2vw, 1.75rem); }
+.ezh-stat-value { margin: 0.25rem 0 0.5rem; line-height: 1.1; }
+.ezh-stat-title { font-size: 1.05rem; margin-bottom: 0.35rem; }
+
+/* ---------- Roadmap ---------- */
+.ezh-roadmap-phase { display: inline-flex; align-items: center; gap: 0.4rem; }
+.ezh-status--deployed .ezh-roadmap-phase svg { color: var(--color-accent); }
+.ezh-status--activeDev .ezh-roadmap-phase svg { color: var(--color-primary); }
+
+/* ---------- Modules showcase on home ---------- */
+.ezh-modsec .ezh-features-grid { margin-top: clamp(1.25rem, 3vw, 2rem); gap: clamp(1rem, 2vw, 1.75rem); }
+.ezh-modsec .ezh-feature-card { text-decoration: none; color: inherit; cursor: pointer; }
+.ezh-modsec .ezh-feature-card:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+.ezh-modsec .ezh-feature-body h3 { font-size: 1.1rem; line-height: 1.45; margin-bottom: 0.4rem; }
+
+@media (max-width: 1023px) { .ezh-modsec .ezh-features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .ezh-modsec .ezh-features-grid { grid-template-columns: 1fr; } }
+
+/* Showcase cards are separate tiles (not the joined hairline panel used by stats/roadmap) */
+.ez-home .ezh-modsec .ezh-features-grid {
+  background: none;
+  border-block: 0;
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+.ez-home .ezh-modsec .ezh-feature-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.ez-home .ezh-modsec .ezh-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+  background: var(--color-surface);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ez-home .ezh-modsec .ezh-feature-card:hover { transform: none; }
+}

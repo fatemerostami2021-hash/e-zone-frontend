@@ -6,6 +6,7 @@ Skills live in `.claude/skills/`. For ANY UI work (new page, hero, section, comp
 - 3D / WebGL: `threejs-*` (use `threejs-r3f`, `threejs-product-viewer`, `threejs-performance` first)
 - Scroll video hero: `video-to-website`
 - Reverse-engineer a reference site: `website-analyzer`
+- UI/UX audit, palettes, type, a11y checklist: `ui-ux-pro-max` (run `python .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system -p "E-ZONE"`), `design-system`
 
 ## Project constraints (override skill defaults)
 - Stack: React + Vite, PLAIN CSS design system (`src/styles/tokens.css`, `ez-*` class prefix). Do NOT introduce Tailwind. Translate skill examples into tokens + `ez-*` classes.
